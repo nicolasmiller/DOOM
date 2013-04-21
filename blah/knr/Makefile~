@@ -1,0 +1,3 @@
+CC=gcc -Wall
+all:
+	$(CC) -o eof eof.c

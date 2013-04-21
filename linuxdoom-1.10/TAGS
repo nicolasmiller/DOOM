@@ -1,0 +1,5367 @@
+
+am_map.c,5242
+static const char rcsid[rcsid24,724
+#define REDS	52,1175
+#define REDRANGE	53,1200
+#define BLUES	54,1220
+#define BLUERANGE	55,1248
+#define GREENS	56,1268
+#define GREENRANGE	57,1291
+#define GRAYS	58,1313
+#define GRAYSRANGE	59,1335
+#define BROWNS	60,1357
+#define BROWNRANGE	61,1380
+#define YELLOWS	62,1402
+#define YELLOWRANGE	63,1430
+#define BLACK	64,1452
+#define WHITE	65,1469
+#define BACKGROUND	68,1512
+#define YOURCOLORS	69,1537
+#define YOURRANGE	70,1562
+#define WALLCOLORS	71,1582
+#define WALLRANGE	72,1606
+#define TSWALLCOLORS	73,1633
+#define TSWALLRANGE	74,1660
+#define FDWALLCOLORS	75,1691
+#define FDWALLRANGE	76,1719
+#define CDWALLCOLORS	77,1750
+#define CDWALLRANGE	78,1779
+#define THINGCOLORS	79,1811
+#define THINGRANGE	80,1838
+#define SECRETWALLCOLORS 81,1868
+#define SECRETWALLRANGE 82,1904
+#define GRIDCOLORS	83,1938
+#define GRIDRANGE	84,1980
+#define XHAIRCOLORS	85,2000
+#define	FB	88,2044
+#define AM_PANDOWNKEY	90,2059
+#define AM_PANUPKEY	91,2095
+#define AM_PANRIGHTKEY	92,2127
+#define AM_PANLEFTKEY	93,2165
+#define AM_ZOOMINKEY	94,2201
+#define AM_ZOOMOUTKEY	95,2226
+#define AM_STARTKEY	96,2252
+#define AM_ENDKEY	97,2280
+#define AM_GOBIGKEY	98,2306
+#define AM_FOLLOWKEY	99,2330
+#define AM_GRIDKEY	100,2355
+#define AM_MARKKEY	101,2378
+#define AM_CLEARMARKKEY	102,2401
+#define AM_NUMMARKPOINTS 104,2430
+#define INITSCALEMTOF 107,2477
+#define F_PANINC	110,2618
+#define M_ZOOMIN 113,2691
+#define M_ZOOMOUT 116,2801
+#define FTOM(119,2903
+#define MTOF(120,2950
+#define CXMTOF(122,3052
+#define CYMTOF(123,3093
+#define LINE_NEVERSEE 126,3168
+    int x,130,3220
+    int x, y;130,3220
+} fpoint_t;131,3234
+    fpoint_t a,135,3264
+    fpoint_t a, b;135,3264
+} fline_t;136,3283
+    fixed_t		x,140,3312
+    fixed_t		x,y;140,3312
+} mpoint_t;141,3330
+    mpoint_t a,145,3360
+    mpoint_t a, b;145,3360
+} mline_t;146,3379
+    fixed_t slp,150,3408
+    fixed_t slp, islp;150,3408
+} islope_t;151,3431
+#define R 160,3572
+mline_t player_arrow[player_arrow161,3603
+#undef R170,3940
+#define NUMPLYRLINES 171,3949
+#define R 173,4010
+mline_t cheat_player_arrow[cheat_player_arrow174,4041
+#undef R192,4796
+#define NUMCHEATPLYRLINES 193,4805
+#define R 195,4877
+mline_t triangle_guy[triangle_guy196,4898
+#undef R201,5050
+#define NUMTRIANGLEGUYLINES 202,5059
+#define R 204,5127
+mline_t thintriangle_guy[thintriangle_guy205,5148
+#undef R210,5295
+#define NUMTHINTRIANGLEGUYLINES 211,5304
+static int 	cheating 216,5383
+static int 	grid 217,5409
+static int 	leveljuststarted 219,5432
+boolean    	automapactive 221,5508
+static int 	finit_width 222,5543
+static int 	finit_height 223,5582
+static int 	f_x;226,5661
+static int	f_y;227,5678
+static int 	f_w;230,5723
+static int	f_h;231,5740
+static int 	lightlev;233,5757
+static byte*	fb;234,5815
+static int 	amclock;235,5858
+static mpoint_t m_paninc;237,5880
+static fixed_t 	mtof_zoommul;238,5955
+static fixed_t 	ftom_zoommul;239,6038
+static fixed_t 	m_x,241,6121
+static fixed_t 	m_x, m_y;241,6121
+static fixed_t 	m_x2,242,6203
+static fixed_t 	m_x2, m_y2;242,6203
+static fixed_t 	m_w;247,6338
+static fixed_t	m_h;248,6359
+static fixed_t 	min_x;251,6403
+static fixed_t	min_y;252,6426
+static fixed_t 	max_x;253,6449
+static fixed_t  max_y;254,6472
+static fixed_t 	max_w;256,6496
+static fixed_t  max_h;257,6535
+static fixed_t 	min_w;260,6598
+static fixed_t  min_h;261,6621
+static fixed_t 	min_scale_mtof;264,6646
+static fixed_t 	max_scale_mtof;265,6719
+static fixed_t old_m_w,268,6824
+static fixed_t old_m_w, old_m_h;268,6824
+static fixed_t old_m_x,269,6857
+static fixed_t old_m_x, old_m_y;269,6857
+static mpoint_t f_oldloc;272,6936
+static fixed_t scale_mtof 275,7020
+static fixed_t scale_ftom;277,7136
+static player_t *plr;plr279,7164
+static patch_t *marknums[marknums281,7225
+static mpoint_t markpoints[markpoints282,7298
+static int markpointnum 283,7368
+static int followplayer 285,7427
+static unsigned char cheat_amap_seq[cheat_amap_seq287,7506
+static cheatseq_t cheat_amap 288,7580
+static boolean stopped 290,7635
+AM_getIslope309,8010
+void AM_activateNewScale(327,8311
+void AM_saveScaleAndLoc(342,8514
+void AM_restoreScaleAndLoc(353,8634
+void AM_addMark(377,9071
+void AM_findMinMaxBoundaries(389,9348
+void AM_changeWindowLoc(429,10106
+void AM_initVariables(458,10548
+void AM_loadPics(502,11369
+void AM_unloadPics(515,11554
+void AM_clearMarks(524,11659
+void AM_LevelInit(537,11889
+void AM_Stop 560,12258
+void AM_Start 573,12453
+void AM_minOutWindowScale(592,12811
+void AM_maxOutWindowScale(602,13007
+AM_Responder614,13215
+void AM_changeWindowScale(741,15797
+void AM_doFollowPlayer(760,16148
+void AM_updateLightLev(784,16585
+void AM_Ticker 805,17053
+void AM_clearFB(833,17450
+AM_clipMline847,17751
+	LEFT	853,17812
+	RIGHT	854,17822
+	BOTTOM	855,17833
+	TOP	856,17845
+#define DOOUTCODE(868,17996
+#undef DOOUTCODE971,20116
+AM_drawFline978,20210
+#define PUTDOT(1004,20712
+AM_drawMline1056,21413
+void AM_drawGrid(1071,21650
+void AM_drawWalls(1117,22676
+AM_rotate1173,23988
+AM_drawLineCharacter1192,24298
+void AM_drawPlayers(1240,24986
+AM_drawThings1285,25862
+void AM_drawMarks(1305,26177
+void AM_drawCrosshair(1326,26708
+void AM_Drawer 1332,26804
+
+d_items.c,64
+rcsid[rcsid24,721
+weaponinfo_t	weaponinfo[weaponinfo47,1119
+
+d_main.c,1307
+static const char rcsid[rcsid28,936
+#define	BGCOLOR	30,1017
+#define	FGCOLOR	31,1036
+char*		wadfiles[wadfiles92,2009
+boolean		devparm;95,2041
+boolean         nomonsters;96,2089
+boolean         respawnparm;97,2145
+boolean         fastparm;98,2199
+boolean         drone;100,2248
+boolean		singletics 102,2272
+skill_t		startskill;112,2452
+int             startepisode;113,2473
+int		startmap;114,2503
+boolean		autostart;115,2518
+FILE*		debugfile;117,2539
+boolean		advancedemo;119,2558
+char		wadfile[wadfile124,2584
+char		mapdir[mapdir125,2626
+char		basedefault[basedefault126,2689
+event_t         events[events141,3015
+int             eventhead;142,3050
+int 		eventtail;143,3077
+void D_PostEvent 150,3171
+void D_ProcessEvents 161,3378
+gamestate_t     wipegamestate 188,3925
+void D_Display 193,4076
+void D_DoomLoop 354,7862
+int             demosequence;414,8967
+int             pagetic;415,8997
+char                    *pagename;pagename416,9022
+void D_PageTicker 423,9121
+void D_PageDrawer 434,9217
+void D_AdvanceDemo 444,9391
+ void D_DoAdvanceDemo 454,9539
+void D_StartTitle 525,10861
+char            title[title536,11011
+void D_AddFile 543,11061
+void IdentifyVersion 563,11493
+void FindResponseFile 722,14960
+#define MAXARGVS 725,15014
+void D_DoomMain 796,16668
+
+d_net.c,1320
+static const char rcsid[rcsid26,782
+#define	NCMD_EXIT	37,1009
+#define	NCMD_RETRANSMIT	38,1039
+#define	NCMD_SETUP	39,1075
+#define	NCMD_KILL	40,1106
+#define	NCMD_CHECKSUM	41,1149
+doomcom_t*	doomcom;44,1187
+doomdata_t*	netbuffer;45,1208
+#define	RESENDCOUNT	57,1520
+#define	PL_DRONE	58,1543
+ticcmd_t	localcmds[localcmds60,1598
+ticcmd_t        netcmds[netcmds62,1631
+int         	nettics[nettics63,1680
+boolean		nodeingame[nodeingame64,1715
+boolean		remoteresend[remoteresend65,1783
+int		resendto[resendto66,1849
+int		resendcount[resendcount67,1909
+int		nodeforplayer[nodeforplayer69,1941
+int             maketic;71,1974
+int		lastnettic;72,1999
+int		skiptics;73,2016
+int		ticdup;74,2031
+int		maxsend;75,2046
+boolean		reboundpacket;82,2187
+doomdata_t	reboundstore;83,2211
+int NetbufferSize 90,2248
+unsigned NetbufferChecksum 98,2362
+int ExpandTics 120,2742
+HSendPacket143,3125
+boolean HGetPacket 192,4066
+char    exitmsg[exitmsg259,5385
+void GetPackets 261,5407
+int      gametime;366,7858
+void NetUpdate 368,7878
+void CheckAbort 453,9571
+void D_ArbitrateNetStart 476,10013
+void D_CheckNetGame 555,11872
+void D_QuitNetGame 602,13038
+int	frametics[frametics629,13501
+int	frameon;630,13519
+int	frameskip[frameskip631,13532
+int	oldnettics;632,13550
+void TryRunTics 636,13596
+
+doomdef.c,20
+rcsid[rcsid26,829
+
+doomstat.c,143
+rcsid[rcsid25,760
+GameMode_t gamemode 35,962
+GameMission_t	gamemission 36,998
+Language_t   language 39,1046
+boolean	modifiedgame;42,1126
+
+dstrings.c,48
+rcsid[rcsid25,751
+char* endmsg[endmsg35,899
+
+f_finale.c,1312
+rcsid[rcsid26,766
+int		finalestage;52,1234
+int		finalecount;54,1253
+#define	TEXTSPEED	56,1272
+#define	TEXTWAIT	57,1292
+char*	e1text 59,1314
+char*	e2text 60,1337
+char*	e3text 61,1360
+char*	e4text 62,1383
+char*	c1text 64,1407
+char*	c2text 65,1430
+char*	c3text 66,1453
+char*	c4text 67,1476
+char*	c5text 68,1499
+char*	c6text 69,1522
+char*	p1text 71,1546
+char*	p2text 72,1569
+char*	p3text 73,1592
+char*	p4text 74,1615
+char*	p5text 75,1638
+char*	p6text 76,1661
+char*	t1text 78,1685
+char*	t2text 79,1708
+char*	t3text 80,1731
+char*	t4text 81,1754
+char*	t5text 82,1777
+char*	t6text 83,1800
+char*	finaletext;85,1824
+char*	finaleflat;86,1842
+void F_StartFinale 96,2001
+boolean F_Responder 195,3846
+void F_Ticker 207,3986
+void F_TextWrite 261,4831
+    char		*name;name336,6062
+    mobjtype_t	type;337,6079
+} castinfo_t;338,6100
+castinfo_t	castorder[castorder340,6115
+int		castnum;362,6613
+int		casttics;363,6627
+state_t*	caststate;364,6642
+boolean		castdeath;365,6662
+int		castframes;366,6682
+int		castonmelee;367,6699
+boolean		castattacking;368,6717
+void F_StartCast 377,6804
+void F_CastTicker 395,7170
+boolean F_CastResponder 502,9884
+void F_CastPrint 523,10383
+void F_CastDrawer 579,11135
+F_DrawPatchCol610,11871
+void F_BunnyScroll 644,12485
+void F_Drawer 700,13602
+
+f_wipe.c,450
+static const char rcsid[rcsid25,754
+static boolean	go 43,1045
+static byte*	wipe_scr_start;45,1069
+static byte*	wipe_scr_end;46,1098
+static byte*	wipe_scr;47,1125
+wipe_shittyColMajorXform51,1155
+wipe_initColorXForm73,1490
+wipe_doColorXForm83,1626
+wipe_exitColorXForm129,2201
+static int*	y;138,2282
+wipe_initMelt141,2302
+wipe_doMelt172,3037
+wipe_exitMelt227,3856
+wipe_StartScreen237,3949
+wipe_EndScreen249,4102
+wipe_ScreenWipe262,4328
+
+g_game.c,4238
+rcsid[rcsid25,728
+#define SAVEGAMESIZE	74,1463
+#define SAVESTRINGSIZE	75,1492
+gameaction_t    gameaction;97,1986
+gamestate_t     gamestate;98,2015
+skill_t         gameskill;99,2043
+boolean		respawnmonsters;100,2071
+int             gameepisode;101,2097
+int             gamemap;102,2127
+boolean         paused;104,2155
+boolean         sendpause;105,2180
+boolean         sendsave;106,2252
+boolean         usergame;107,2322
+boolean         timingdemo;109,2390
+boolean         nodrawers;110,2474
+boolean         noblit;111,2550
+int             starttime;112,2626
+boolean         viewactive;114,2704
+boolean         deathmatch;116,2735
+boolean         netgame;117,2807
+boolean         playeringame[playeringame118,2886
+player_t        players[players119,2929
+int             consoleplayer;121,2969
+int             displayplayer;122,3049
+int             gametic;123,3114
+int             levelstarttic;124,3140
+int             totalkills,125,3207
+int             totalkills, totalitems,125,3207
+int             totalkills, totalitems, totalsecret;125,3207
+char            demoname[demoname127,3286
+boolean         demorecording;128,3317
+boolean         demoplayback;129,3349
+boolean		netdemo;130,3380
+byte*		demobuffer;131,3399
+byte*		demo_p;132,3418
+byte*		demoend;133,3433
+boolean         singledemo;134,3450
+boolean         precache 136,3535
+wbstartstruct_t wminfo;138,3617
+short		consistancy[consistancy140,3697
+byte*		savebuffer;142,3744
+int             key_right;148,3804
+int		key_left;149,3831
+int		key_up;151,3847
+int		key_down;152,3860
+int             key_strafeleft;153,3876
+int		key_straferight;154,3908
+int             key_fire;155,3931
+int		key_use;156,3957
+int		key_strafe;157,3971
+int		key_speed;158,3988
+int             mousebfire;160,4007
+int             mousebstrafe;161,4036
+int             mousebforward;162,4067
+int             joybfire;164,4101
+int             joybstrafe;165,4128
+int             joybuse;166,4157
+int             joybspeed;167,4183
+#define MAXPLMOVE	171,4217
+#define TURBOTHRESHOLD	173,4256
+fixed_t		forwardmove[forwardmove175,4285
+fixed_t		sidemove[sidemove176,4326
+fixed_t		angleturn[angleturn177,4364
+#define SLOWTURNTICS	179,4423
+#define NUMKEYS	181,4449
+boolean         gamekeydown[gamekeydown183,4472
+int             turnheld;184,4511
+boolean		mousearray[mousearray186,4571
+boolean*	mousebuttons 187,4596
+int             mousex;190,4683
+int		mousey;191,4707
+int             dclicktime;193,4730
+int		dclickstate;194,4758
+int		dclicks;195,4776
+int             dclicktime2;196,4791
+int		dclickstate2;197,4820
+int		dclicks2;198,4839
+int             joyxmove;201,4888
+int		joyymove;202,4914
+boolean         joyarray[joyarray203,4929
+boolean*	joybuttons 204,4959
+int		savegameslot;206,5013
+char		savedescription[savedescription207,5033
+#define	BODYQUESIZE	210,5065
+mobj_t*		bodyque[bodyque212,5089
+int		bodyqueslot;213,5121
+void*		statcopy;215,5142
+int G_CmdChecksum 219,5193
+void G_BuildTiccmd 237,5515
+void G_DoLoadLevel 445,9811
+boolean G_Responder 504,11513
+void G_Ticker 605,13791
+void G_InitPlayer 761,16958
+void G_PlayerFinishLevel 779,17233
+void G_PlayerReborn 800,17756
+G_CheckSpot844,18955
+void G_DeathMatchSpawnPlayer 897,20243
+void G_DoReborn 924,20861
+void G_ScreenShot 970,21846
+int pars[pars978,21933
+int cpars[cpars987,22113
+boolean		secretexit;999,22343
+void G_ExitLevel 1002,22391
+void G_SecretExitLevel 1009,22514
+void G_DoCompleted 1020,22755
+void G_WorldDone 1147,25361
+void G_DoWorldDone 1172,25699
+char	savename[savename1190,26026
+void G_LoadGame 1192,26047
+#define VERSIONSIZE	1198,26146
+void G_DoLoadGame 1201,26173
+G_SaveGame1261,27460
+void G_DoSaveGame 1270,27606
+skill_t	d_skill;1328,29102
+int     d_episode;1329,29120
+int     d_map;1330,29140
+G_DeferedInitNew1333,29163
+void G_DoNewGame 1345,29330
+G_InitNew1365,29774
+#define DEMOMARKER	1488,32400
+void G_ReadDemoTiccmd 1491,32427
+void G_WriteDemoTiccmd 1506,32778
+void G_RecordDemo 1530,33278
+void G_BeginRecording 1549,33686
+char*	defdemoname;1574,34126
+void G_DeferedPlayDemo 1576,34148
+void G_DoPlayDemo 1582,34249
+void G_TimeDemo 1625,35162
+boolean G_CheckDemoStatus 1647,35603
+
+hu_lib.c,684
+rcsid[rcsid24,751
+#define noterased 38,1009
+void HUlib_init(42,1086
+void HUlib_clearTextLine(46,1113
+HUlib_initTextLine54,1226
+HUlib_addCharToTextLine69,1415
+boolean HUlib_delCharFromTextLine(86,1628
+HUlib_drawTextLine100,1800
+void HUlib_eraseTextLine(143,2540
+HUlib_initSText177,3427
+void HUlib_addLineToSText(200,3747
+HUlib_addMessageToSText217,4001
+void HUlib_drawSText(231,4266
+void HUlib_eraseSText(254,4668
+HUlib_initIText270,4883
+void HUlib_delCharFromIText(286,5219
+void HUlib_eraseLineFromIText(292,5333
+void HUlib_resetIText(299,5482
+HUlib_addPrefixToIText306,5579
+HUlib_keyInIText318,5821
+void HUlib_drawIText(336,6136
+void HUlib_eraseIText(347,6299
+
+hu_stuff.c,1747
+rcsid[rcsid24,740
+#define HU_TITLE	49,1092
+#define HU_TITLE2	50,1149
+#define HU_TITLEP	51,1190
+#define HU_TITLET	52,1231
+#define HU_TITLEHEIGHT	53,1272
+#define HU_TITLEX	54,1297
+#define HU_TITLEY	55,1317
+#define HU_INPUTTOGGLE	57,1370
+#define HU_INPUTX	58,1397
+#define HU_INPUTY	59,1423
+#define HU_INPUTWIDTH	60,1497
+#define HU_INPUTHEIGHT	61,1522
+char*	chat_macros[chat_macros65,1550
+char*	player_names[player_names79,1797
+char			chat_char;88,1905
+static player_t*	plr;89,1940
+patch_t*		hu_font[hu_font90,1962
+static hu_textline_t	w_title;91,1994
+boolean			chat_on;92,2024
+static hu_itext_t	w_chat;93,2043
+static boolean		always_off 94,2069
+static char		chat_dest[chat_dest95,2105
+static hu_itext_t w_inputbuffer[w_inputbuffer96,2141
+static boolean		message_on;98,2187
+boolean			message_dontfuckwithme;99,2215
+static boolean		message_nottobefuckedwith;100,2249
+static hu_stext_t	w_message;102,2293
+static int		message_counter;103,2322
+static boolean		headsupactive 108,2410
+char*	mapnames[mapnames115,2527
+char*	mapnames2[mapnames2169,3330
+char*	mapnamesp[mapnamesp208,3820
+char *mapnamest[mapnamest247,4348
+const char*	shiftxform;286,4871
+const char french_shiftxform[french_shiftxform288,4896
+const char english_shiftxform[english_shiftxform330,5950
+char frenchKeyMap[frenchKeyMap372,7005
+char ForeignTranslation(387,7561
+void HU_Init(392,7653
+void HU_Stop(414,8011
+void HU_Start(419,8062
+void HU_Drawer(486,9260
+void HU_Erase(496,9412
+void HU_Ticker(505,9539
+#define QUEUESIZE	580,11223
+static char	chatchars[chatchars582,11247
+static int	head 583,11281
+static int	tail 584,11302
+void HU_queueChatChar(587,11325
+char HU_dequeueChatChar(600,11525
+boolean HU_Responder(617,11709
+
+i_main.c,32
+rcsid[rcsid25,779
+main35,911
+
+i_net.c,418
+rcsid[rcsid24,721
+#define ntohl(55,1209
+#define ntohs(61,1547
+#define htonl(65,1722
+#define htons(66,1748
+int	DOOMPORT 76,1845
+int			sendsocket;78,1891
+int			insocket;79,1909
+struct	sockaddr_in	sendaddress[sendaddress81,1926
+int UDPsocket 90,2040
+BindToLocalPort106,2269
+void PacketSend 127,2654
+void PacketGet 161,3628
+int GetLocalAddress 222,5212
+void I_InitNetwork 244,5701
+void I_NetCmd 335,7804
+
+info.c,126
+rcsid[rcsid27,835
+char *sprnames[sprnames40,1042
+state_t	states[states135,3612
+mobjinfo_t mobjinfo[mobjinfo1106,61895
+
+i_sound.c,1927
+rcsid[rcsid25,752
+FILE*	sndserver=65,1415
+char*	sndserver_filename 66,1434
+#define SOUND_INTERVAL 72,1622
+static int flag 85,1951
+#define SAMPLECOUNT	94,2224
+#define NUM_CHANNELS	95,2249
+#define BUFMUL 97,2319
+#define MIXBUFFERSIZE	98,2353
+#define SAMPLERATE	100,2398
+#define SAMPLESIZE	101,2430
+int 		lengths[lengths104,2509
+int	audio_fd;107,2562
+signed short	mixbuffer[mixbuffer113,2757
+unsigned int	channelstep[channelstep117,2828
+unsigned int	channelstepremainder[channelstepremainder119,2914
+unsigned char*	channels[channels123,3010
+unsigned char*	channelsend[channelsend124,3049
+int		channelstart[channelstart132,3285
+int 		channelhandles[channelhandles138,3451
+int		channelids[channelids142,3572
+int		steptable[steptable145,3644
+int		vol_lookup[vol_lookup148,3685
+int*		channelleftvol_lookup[channelleftvol_lookup151,3762
+int*		channelrightvol_lookup[channelrightvol_lookup152,3805
+myioctl161,3892
+getsfx186,4230
+addsfx265,6453
+void I_SetChannels(396,9499
+void I_SetSfxVolume(427,10268
+void I_SetMusicVolume(438,10531
+int I_GetSfxLumpNum(451,10769
+I_StartSound471,11283
+void I_StopSound 505,11850
+int I_SoundIsPlaying(517,12071
+void I_UpdateSound(539,12652
+I_SubmitSound(666,15649
+I_UpdateSoundParams675,15760
+void I_ShutdownSound(693,16061
+I_InitSound(738,16711
+void I_InitMusic(835,18872
+void I_ShutdownMusic(836,18900
+static int	looping=838,18932
+static int	musicdies=839,18954
+void I_PlaySong(841,18980
+void I_PauseSong 848,19099
+void I_ResumeSong 854,19161
+void I_StopSong(860,19224
+void I_UnRegisterSong(869,19319
+int I_RegisterSong(875,19385
+int I_QrySongPlaying(884,19488
+    typedef     sigset_t        tSigSet;902,19806
+    typedef     int             tSigSet;904,19857
+static int /*__itimer_which*/  itimer 912,20131
+static int sig 914,20185
+void I_HandleSoundTimer(917,20234
+int I_SoundSetTimer(941,20677
+void I_SoundDelTimer(980,21610
+
+i_system.c,367
+rcsid[rcsid24,721
+int	mb_used 51,1117
+I_Tactile55,1141
+ticcmd_t	emptycmd;64,1228
+ticcmd_t*	I_BaseTiccmd(65,1247
+int  I_GetHeapSize 71,1304
+byte* I_ZoneBase 76,1365
+int  I_GetTime 88,1525
+void I_Init 107,1832
+void I_Quit 116,1917
+void I_WaitVBL(126,2071
+void I_BeginRead(139,2290
+void I_EndRead(143,2318
+byte*	I_AllocLow(147,2344
+void I_Error 162,2529
+
+i_video.c,1273
+rcsid[rcsid25,759
+#define POINTER_WARP_COUNTDOWN	60,1463
+Display*	X_display=62,1497
+Window		X_mainWindow;63,1519
+Colormap	X_cmap;64,1541
+Visual*		X_visual;65,1558
+GC		X_gc;66,1577
+XEvent		X_event;67,1587
+int		X_screen;68,1604
+XVisualInfo	X_visualinfo;69,1619
+XImage*		image;70,1645
+int		X_width;71,1661
+int		X_height;72,1675
+boolean		doShm;75,1723
+XShmSegmentInfo	X_shminfo;77,1740
+int		X_shmeventtype;78,1767
+boolean		grabMouse;83,1896
+int		doPointerWarp 84,1916
+static int	multiply=90,2112
+int xlatekey(97,2188
+void I_ShutdownGraphics(164,3800
+void I_StartFrame 183,4123
+static int	lastmousex 189,4165
+static int	lastmousey 190,4192
+boolean		mousemoved 191,4219
+boolean		shmFinished;192,4248
+void I_GetEvent(194,4271
+createnullcursor282,6493
+void I_StartTic 309,7143
+void I_UpdateNoBlit 344,7668
+void I_FinishUpdate 352,7745
+void I_ReadScreen 527,11606
+static XColor	colors[colors536,11722
+void UploadNewPalette(538,11750
+void I_SetPalette 582,12674
+void grabsharedmemory(595,12935
+void I_InitGraphics(691,14938
+unsigned	exptable[exptable917,20143
+void InitExpand 919,20168
+double		exptable2[exptable2927,20285
+void InitExpand2 929,20314
+	double 		d;937,20432
+	unsigned	u[u938,20445
+int	inited;955,20754
+Expand4958,20772
+
+m_argv.c,88
+rcsid[rcsid24,721
+int		myargc;29,806
+char**		myargv;30,819
+int M_CheckParm 41,1003
+
+m_bbox.c,63
+rcsid[rcsid28,812
+void M_ClearBox 39,957
+M_AddToBox46,1084
+
+m_cheat.c,159
+rcsid[rcsid26,750
+static int		firsttime 34,869
+static unsigned char	cheat_xlate_table[cheat_xlate_table35,896
+cht_CheckCheat43,1065
+cht_GetParam78,1632
+
+m_fixed.c,72
+rcsid[rcsid26,753
+FixedMul44,1014
+FixedDiv58,1152
+FixedDiv270,1299
+
+m_menu.c,4901
+rcsid[rcsid26,809
+int			mouseSensitivity;76,1525
+int			showMessages;79,1617
+int			detailLevel;83,1690
+int			screenblocks;84,1711
+int			screenSize;87,1779
+int			quickSaveSlot;90,1834
+int			messageToPrint;93,1896
+char*			messageString;95,1956
+int			messx;98,1999
+int			messy;99,2015
+int			messageLastMenuActive;100,2028
+boolean			messageNeedsInput;103,2096
+#define SAVESTRINGSIZE 107,2173
+char gammamsg[gammamsg109,2201
+int			saveStringEnter;119,2353
+int             	saveSlot;120,2390
+int			saveCharIndex;121,2442
+char			saveOldString[saveOldString123,2527
+boolean			inhelpscreens;125,2568
+boolean			menuactive;126,2593
+#define SKULLXOFF	128,2616
+#define LINEHEIGHT	129,2639
+char			savegamestrings[savegamestrings132,2690
+char	endstring[endstring134,2735
+    short	status;143,2847
+    char	name[name145,2870
+    void	(*routine)routine150,2986
+    char	alphaKey;153,3046
+} menuitem_t;154,3068
+typedef struct menu_s158,3085
+    short		numitems;160,3109
+    struct menu_s*	prevMenu;161,3149
+    menuitem_t*		menuitems;162,3195
+    void		(*routine)routine163,3237
+    short		x;164,3277
+    short		y;165,3291
+    short		lastOn;166,3321
+} menu_t;167,3374
+short		itemOn;169,3385
+short		skullAnimCounter;170,3427
+short		whichSkull;171,3479
+char    skullName[skullName175,3611
+menu_t*	currentMenu;178,3687
+    newgame 241,5224
+    options,242,5241
+    loadgame,243,5254
+    savegame,244,5268
+    readthis,245,5282
+    quitdoom,246,5296
+    main_end247,5310
+} main_e;248,5323
+menuitem_t MainMenu[MainMenu250,5334
+menu_t  MainDef 261,5610
+    ep1,277,5741
+    ep2,278,5750
+    ep3,279,5759
+    ep4,280,5768
+    ep_end281,5777
+} episodes_e;282,5788
+menuitem_t EpisodeMenu[EpisodeMenu284,5803
+menu_t  EpiDef 292,5966
+    killthings,307,6204
+    toorough,308,6220
+    hurtme,309,6234
+    violence,310,6246
+    nightmare,311,6260
+    newg_end312,6275
+} newgame_e;313,6288
+menuitem_t NewGameMenu[NewGameMenu315,6302
+menu_t  NewDef 324,6527
+    endgame,341,6774
+    messages,342,6787
+    detail,343,6801
+    scrnsize,344,6813
+    option_empty1,345,6827
+    mousesens,346,6846
+    option_empty2,347,6861
+    soundvol,348,6880
+    opt_end349,6894
+} options_e;350,6906
+menuitem_t OptionsMenu[OptionsMenu352,6920
+menu_t  OptionsDef 364,7211
+    rdthsempty1,379,7356
+    read1_end380,7373
+} read_e;381,7387
+menuitem_t ReadMenu1[ReadMenu1383,7398
+menu_t  ReadDef1 388,7454
+    rdthsempty2,400,7570
+    read2_end401,7587
+} read_e2;402,7601
+menuitem_t ReadMenu2[ReadMenu2404,7613
+menu_t  ReadDef2 409,7673
+    sfx_vol,424,7817
+    sfx_empty1,425,7830
+    music_vol,426,7846
+    sfx_empty2,427,7861
+    sound_end428,7877
+} sound_e;429,7891
+menuitem_t SoundMenu[SoundMenu431,7903
+menu_t  SoundDef 439,8030
+    load1,454,8167
+    load2,455,8178
+    load3,456,8189
+    load4,457,8200
+    load5,458,8211
+    load6,459,8222
+    load_end460,8233
+} load_e;461,8246
+menuitem_t LoadMenu[LoadMenu463,8257
+menu_t  LoadDef 473,8465
+menuitem_t SaveMenu[SaveMenu486,8588
+menu_t  SaveDef 496,8796
+void M_ReadSaveStrings(511,8968
+void M_DrawLoad(542,9579
+void M_DrawSaveLoadBorder(559,9922
+void M_LoadSelect(579,10291
+void M_LoadGame 594,10572
+void M_DrawSave(610,10768
+void M_DoSave(631,11262
+void M_SaveSelect(644,11506
+void M_SaveGame 659,11867
+char    tempstring[tempstring679,12107
+void M_QuickSaveResponse(681,12132
+void M_QuickSave(690,12259
+void M_QuickLoadResponse(718,12715
+void M_QuickLoad(728,12847
+void M_DrawReadThis1(752,13230
+void M_DrawReadThis2(776,13636
+void M_DrawSound(800,14082
+void M_Sound(811,14354
+void M_SfxVol(816,14416
+void M_MusicVol(833,14657
+void M_DrawMainMenu(856,14939
+void M_DrawNewGame(867,15059
+void M_NewGame(873,15226
+int     epi;891,15474
+void M_DrawEpisode(893,15488
+void M_VerifyNightmare(898,15588
+void M_ChooseSkill(907,15717
+void M_Episode(919,15915
+char    detailNames[detailNames947,16346
+char	msgNames[msgNames948,16398
+void M_DrawOptions(951,16447
+void M_Options(968,17010
+void M_ChangeMessages(978,17115
+void M_EndGameResponse(996,17427
+void M_EndGame(1006,17570
+void M_ReadThis(1030,17840
+void M_ReadThis2(1036,17921
+void M_FinishReadThis(1042,18003
+int     quitsounds[quitsounds1054,18112
+int     quitsounds2[quitsounds21066,18267
+void M_QuitResponse(1080,18425
+void M_QuitDOOM(1098,18691
+void M_ChangeSensitivity(1113,19048
+void M_ChangeDetail(1131,19268
+void M_SizeDisplay(1152,19658
+M_DrawThermo1183,19990
+M_DrawEmptyCell1209,20472
+M_DrawSelCell1218,20651
+M_StartMessage1228,20829
+void M_StopMessage(1244,21092
+int M_StringWidth(1255,21234
+int M_StringHeight(1278,21596
+M_WriteText1297,21905
+boolean M_Responder 1349,22464
+void M_StartControlPanel 1723,30048
+void M_Drawer 1740,30363
+void M_ClearMenus 1811,31757
+void M_SetupNextMenu(1824,31909
+void M_Ticker 1834,32032
+void M_Init 1847,32161
+
+m_misc.c,1191
+rcsid[rcsid28,793
+M_DrawText70,1408
+#define O_BINARY 109,1887
+M_WriteFile113,1922
+M_ReadFile140,2290
+int		usemouse;169,2883
+int		usejoystick;170,2898
+char*		mousetype;217,3664
+char*		mousedev;218,3682
+    char*	name;227,3755
+    int*	location;228,3771
+    int		defaultvalue;229,3790
+    int		scantranslate;230,3813
+    int		untranslated;231,3859
+} default_t;232,3897
+default_t	defaults[defaults234,3911
+int	numdefaults;301,6006
+char*	defaultfile;302,6023
+void M_SaveDefaults 308,6068
+void M_LoadDefaults 340,6635
+    char		manufacturer;412,8067
+    char		version;413,8091
+    char		encoding;414,8110
+    char		bits_per_pixel;415,8130
+    unsigned short	xmin;417,8157
+    unsigned short	ymin;418,8182
+    unsigned short	xmax;419,8207
+    unsigned short	ymax;420,8232
+    unsigned short	hres;422,8262
+    unsigned short	vres;423,8287
+    unsigned char	palette[palette425,8313
+    char		reserved;427,8349
+    char		color_planes;428,8369
+    unsigned short	bytes_per_line;429,8393
+    unsigned short	palette_type;430,8428
+    char		filler[filler432,8466
+    unsigned char	data;433,8488
+} pcx_t;434,8526
+WritePCXfile441,8564
+void M_ScreenShot 502,9824
+
+m_random.c,195
+static const char rcsid[rcsid24,725
+unsigned char rndtable[rndtable31,853
+int	rndindex 53,2250
+int	prndindex 54,2268
+int P_Random 57,2319
+int M_Random 63,2412
+void M_ClearRandom 69,2502
+
+m_swap.c,86
+rcsid[rcsid25,770
+unsigned short SwapSHORT(38,1010
+unsigned long SwapLONG(45,1155
+
+p_ceilng.c,266
+rcsid[rcsid24,771
+ceiling_t*	activeceilings[activeceilings45,1026
+void T_MoveCeiling 52,1092
+EV_DoCeiling172,3094
+void P_AddActiveCeiling(251,4815
+void P_RemoveActiveCeiling(270,5041
+void P_ActivateInStasisCeiling(291,5377
+int	EV_CeilingCrushStop(314,5824
+
+p_doors.c,421
+rcsid[rcsid24,759
+slidename_t	slideFrameNames[slideFrameNames46,1062
+void T_VerticalDoor 63,1309
+EV_DoLockedDoor207,3836
+EV_DoDoor264,4719
+EV_VerticalDoor354,6734
+void P_SpawnDoorCloseIn30 505,9685
+P_SpawnDoorRaiseIn5Mins528,10150
+slideframe_t slideFrames[slideFrames564,10906
+void P_InitSlidingDoorFrames(566,10948
+int P_FindSlidingDoorType(610,12072
+void T_SlidingDoor 625,12313
+EV_SlidingDoor713,14177
+
+p_enemy.c,2610
+rcsid[rcsid27,816
+    DI_EAST,53,1134
+    DI_NORTHEAST,54,1147
+    DI_NORTH,55,1165
+    DI_NORTHWEST,56,1179
+    DI_WEST,57,1197
+    DI_SOUTHWEST,58,1210
+    DI_SOUTH,59,1228
+    DI_SOUTHEAST,60,1242
+    DI_NODIR,61,1260
+    NUMDIRS62,1274
+} dirtype_t;64,1291
+dirtype_t opposite[opposite70,1342
+dirtype_t diags[diags76,1478
+mobj_t*		soundtarget;103,1901
+P_RecursiveSound106,1929
+P_NoiseAlert159,2941
+boolean P_CheckMeleeRange 174,3125
+boolean P_CheckMissileRange 197,3529
+fixed_t	xspeed[xspeed264,4753
+fixed_t yspeed[yspeed265,4825
+#define MAXSPECIALCROSS	267,4898
+boolean P_Move 272,4990
+boolean P_TryWalk 349,6536
+void P_NewChaseDir 363,6687
+P_LookForPlayers499,8940
+void A_KeenDie 566,10086
+void A_Look 604,10687
+void A_Chase 672,11810
+void A_FaceTarget 782,13926
+void A_PosAttack 802,14270
+void A_SPosAttack 821,14683
+void A_CPosAttack 845,15165
+void A_CPosRefire 865,15606
+void A_SpidRefire 882,15917
+void A_BspiAttack 898,16227
+void A_TroopAttack 913,16435
+void A_SargAttack 935,16816
+void A_HeadAttack 950,17068
+void A_CyberAttack 969,17413
+void A_BruisAttack 979,17571
+void A_SkelMissile 1002,17951
+int	TRACEANGLE 1019,18314
+void A_Tracer 1021,18343
+void A_SkelWhoosh 1093,19832
+void A_SkelFist 1101,19967
+mobj_t*		corpsehit;1124,20320
+mobj_t*		vileobj;1125,20340
+fixed_t		viletryx;1126,20358
+fixed_t		viletryy;1127,20377
+boolean PIT_VileCheck 1129,20397
+void A_VileChase 1167,21267
+void A_VileStart 1233,22695
+void A_StartFire 1245,22870
+void A_FireCrackle 1251,22963
+void A_Fire 1257,23057
+void A_VileTarget 1285,23588
+void A_VileAttack 1310,23943
+#define	FATSPREAD	1349,24757
+void A_FatRaise 1351,24786
+void A_FatAttack1 1358,24888
+void A_FatAttack2 1375,25347
+void A_FatAttack3 1392,25818
+#define	SKULLSPEED	1417,26470
+void A_SkullAttack 1419,26505
+A_PainShootSkull1450,27207
+void A_PainAttack 1512,28552
+void A_PainDie 1522,28696
+void A_Scream 1535,28909
+void A_XScream 1572,29488
+void A_Pain 1577,29561
+void A_Fall 1585,29676
+void A_Explode 1598,29884
+void A_BossDeath 1609,30057
+void A_Hoof 1759,32301
+void A_Metal 1765,32382
+void A_BabyMetal 1771,32465
+A_OpenShotgun21778,32558
+A_LoadShotgun21786,32663
+A_CloseShotgun21799,32823
+mobj_t*		braintargets[braintargets1809,32952
+int		numbraintargets;1810,32979
+int		braintargeton;1811,33001
+void A_BrainAwake 1813,33022
+void A_BrainPain 1843,33570
+void A_BrainScream 1849,33641
+void A_BrainExplode 1875,34093
+void A_BrainDie 1896,34471
+void A_BrainSpit 1901,34525
+void A_SpawnSound 1930,35125
+void A_SpawnFly 1936,35216
+void A_PlayerScream 1994,36412
+
+p_floor.c,111
+rcsid[rcsid25,757
+T_MovePlane49,1081
+void T_MoveFloor(209,4056
+EV_DoFloor260,5001
+EV_BuildStairs453,9467
+
+p_inter.c,302
+rcsid[rcsid26,767
+#define BONUSADD	51,1119
+int	maxammo[maxammo58,1218
+int	clipammo[clipammo59,1261
+P_GiveAmmo74,1486
+P_GiveWeapon168,3296
+P_GiveBody229,4520
+P_GiveArmor252,4873
+P_GiveCard274,5157
+P_GivePower290,5346
+P_TouchSpecialThing339,6109
+P_KillMobj668,12571
+P_DamageMobj775,14874
+
+p_lights.c,351
+rcsid[rcsid26,778
+void T_FireFlicker 46,1014
+void P_SpawnFireFlicker 68,1376
+void T_LightFlash 98,1989
+void P_SpawnLightFlash 124,2462
+void T_StrobeFlash 155,3070
+P_SpawnStrobeFlash181,3519
+void EV_StartLightStrobing(215,4277
+void EV_TurnTagLightsOff(236,4597
+EV_LightTurnOn271,5195
+void T_Glow(314,5875
+void P_SpawnGlowingLight(341,6305
+
+p_map.c,1561
+rcsid[rcsid26,778
+fixed_t		tmbbox[tmbbox46,1075
+mobj_t*		tmthing;47,1095
+int		tmflags;48,1113
+fixed_t		tmx;49,1127
+fixed_t		tmy;50,1141
+boolean		floatok;55,1234
+fixed_t		tmfloorz;57,1253
+fixed_t		tmceilingz;58,1272
+fixed_t		tmdropoffz;59,1293
+line_t*		ceilingline;63,1418
+#define MAXSPECIALCROSS	67,1546
+line_t*		spechit[spechit69,1574
+int		numspechit;70,1609
+boolean PIT_StompThing 81,1678
+P_TeleportMove115,2289
+boolean PIT_CheckLine 189,3983
+boolean PIT_CheckThing 252,5466
+P_CheckPosition375,8134
+P_TryMove451,10174
+boolean P_ThingHeightClip 530,12011
+fixed_t		bestslidefrac;566,12752
+fixed_t		secondslidefrac;567,12776
+line_t*		bestslideline;569,12803
+line_t*		secondslideline;570,12827
+mobj_t*		slidemo;572,12854
+fixed_t		tmxmove;574,12873
+fixed_t		tmymove;575,12891
+void P_HitSlideLine 584,13017
+boolean PTR_SlideTraverse 636,14025
+void P_SlideMove 695,15224
+mobj_t*		linetarget;794,17356
+mobj_t*		shootthing;795,17402
+fixed_t		shootz;799,17491
+int		la_damage;801,17510
+fixed_t		attackrange;802,17526
+fixed_t		aimslope;804,17549
+PTR_AimTraverse 816,17754
+boolean PTR_ShootTraverse 899,19606
+P_AimLineAttack1023,22293
+P_LineAttack1063,23062
+mobj_t*		usething;1093,23624
+boolean	PTR_UseTraverse 1095,23644
+void P_UseLines 1130,24321
+mobj_t*		bombsource;1154,24775
+mobj_t*		bombspot;1155,24796
+int		bombdamage;1156,24815
+boolean PIT_RadiusAttack 1164,24936
+P_RadiusAttack1206,25744
+boolean		crushchange;1250,26800
+boolean		nofit;1251,26822
+boolean PIT_ChangeSector 1257,26866
+P_ChangeSector1321,27897
+
+p_maputl.c,728
+rcsid[rcsid28,880
+P_AproxDistance49,1146
+P_PointOnLineSide66,1348
+P_BoxOnLineSide110,2051
+P_PointOnDivlineSide161,2900
+P_MakeDivline211,3700
+P_InterceptVector231,4014
+fixed_t opentop;294,5222
+fixed_t openbottom;295,5239
+fixed_t openrange;296,5259
+fixed_t	lowfloor;297,5278
+void P_LineOpening 300,5298
+void P_UnsetThingPosition 347,6171
+P_SetThingPosition 396,7221
+P_BlockLinesIterator472,8764
+P_BlockThingsIterator513,9379
+intercept_t	intercepts[intercepts544,9743
+intercept_t*	intercept_p;545,9782
+divline_t 	trace;547,9809
+boolean 	earlyout;548,9827
+int		ptflags;549,9846
+PIT_AddLineIntercepts 562,10137
+boolean PIT_AddThingIntercepts 616,11207
+P_TraverseIntercepts683,12454
+P_PathTraverse743,13535
+
+p_mobj.c,693
+rcsid[rcsid25,765
+int test;51,1196
+P_SetMobjState54,1215
+void P_ExplodeMissile 90,1764
+#define STOPSPEED	111,2099
+#define FRICTION	112,2125
+void P_XYMovement 114,2151
+void P_ZMovement 246,4815
+P_NightmareRespawn 357,6892
+void P_MobjThinker 415,8184
+P_SpawnMobj480,9352
+mapthing_t	itemrespawnque[itemrespawnque540,10684
+int		itemrespawntime[itemrespawntime541,10724
+int		iquehead;542,10759
+int		iquetail;543,10774
+void P_RemoveMobj 546,10791
+void P_RespawnSpecials 578,11420
+void P_SpawnPlayer 642,12705
+void P_SpawnMapThing 708,14026
+P_SpawnPuff812,16024
+P_SpawnBlood839,16414
+void P_CheckMissileSpawn 868,16915
+P_SpawnMissile889,17302
+P_SpawnPlayerMissile935,18266
+
+p_plats.c,233
+rcsid[rcsid25,780
+plat_t*		activeplats[activeplats45,1060
+void T_PlatRaise(52,1128
+EV_DoPlat139,2710
+void P_ActivateInStasis(258,5388
+void EV_StopPlat(273,5724
+void P_AddActivePlat(288,6094
+void P_RemoveActivePlat(301,6309
+
+p_pspr.c,959
+rcsid[rcsid26,798
+#define LOWERSPEED	44,1054
+#define RAISESPEED	45,1085
+#define WEAPONBOTTOM	47,1117
+#define WEAPONTOP	48,1151
+#define BFGCELLS	52,1217
+P_SetPsprite59,1269
+fixed_t		swingx;109,2031
+fixed_t		swingy;110,2048
+void P_CalcSwing 112,2066
+void P_BringUpWeapon 138,2604
+boolean P_CheckAmmo 161,3173
+void P_FireWeapon 246,5077
+void P_DropWeapon 265,5446
+A_WeaponReady282,5765
+void A_ReFire343,7219
+A_CheckReload366,7602
+A_Lower385,7860
+A_Raise423,8508
+A_GunFlash449,8908
+A_Punch468,9138
+A_Saw502,9783
+A_FireMissile551,10849
+A_FireBFG564,11040
+A_FirePlasma578,11238
+fixed_t		bulletslope;598,11623
+void P_BulletSlope 601,11647
+P_GunShot626,12060
+A_FirePistol647,12358
+A_FireShotgun669,12760
+A_FireShotgun2696,13194
+A_FireCGun733,13868
+void A_Light0 761,14369
+void A_Light1 766,14450
+void A_Light2 771,14531
+void A_BFGSpray 781,14683
+A_BFGsound818,15328
+void P_SetupPsprites 831,15494
+void P_MovePsprites 851,15829
+
+p_saveg.c,611
+rcsid[rcsid25,749
+byte*		save_p;35,930
+#define PADSAVEP(40,1029
+void P_ArchivePlayers 47,1116
+void P_UnArchivePlayers 79,1597
+void P_ArchiveWorld 114,2161
+void P_UnArchiveWorld 167,3135
+    tc_end,222,4156
+    tc_mobj223,4168
+} thinkerclass_t;225,4181
+void P_ArchiveThinkers 232,4229
+void P_UnArchiveThinkers 266,4930
+    tc_ceiling,331,6329
+    tc_door,332,6345
+    tc_floor,333,6358
+    tc_plat,334,6372
+    tc_flash,335,6385
+    tc_strobe,336,6399
+    tc_glow,337,6414
+    tc_endspecials338,6427
+} specials_e;340,6447
+void P_ArchiveSpecials 355,6842
+void P_UnArchiveSpecials 475,9690
+
+p_setup.c,1104
+rcsid[rcsid26,805
+int		numvertexes;56,1228
+vertex_t*	vertexes;57,1246
+int		numsegs;59,1267
+seg_t*		segs;60,1281
+int		numsectors;62,1296
+sector_t*	sectors;63,1313
+int		numsubsectors;65,1333
+subsector_t*	subsectors;66,1353
+int		numnodes;68,1379
+node_t*		nodes;69,1394
+int		numlines;71,1411
+line_t*		lines;72,1426
+int		numsides;74,1443
+side_t*		sides;75,1458
+int		bmapwidth;86,1684
+int		bmapheight;87,1700
+short*		blockmap;88,1738
+short*		blockmaplump;90,1816
+fixed_t		bmaporgx;92,1863
+fixed_t		bmaporgy;93,1882
+mobj_t**	blocklinks;95,1921
+byte*		rejectmatrix;105,2136
+#define MAX_DEATHMATCH_STARTS	109,2211
+mapthing_t	deathmatchstarts[deathmatchstarts111,2245
+mapthing_t*	deathmatch_p;112,2297
+mapthing_t	playerstarts[playerstarts113,2323
+void P_LoadVertexes 122,2389
+void P_LoadSegs 159,3156
+void P_LoadSubsectors 202,4134
+void P_LoadSectors 231,4739
+void P_LoadNodes 264,5558
+void P_LoadThings 301,6283
+void P_LoadLineDefs 357,7395
+void P_LoadSideDefs 438,9015
+void P_LoadBlockMap 469,9814
+void P_GroupLines 499,10518
+P_SetupLevel584,12563
+void P_Init 700,14890
+
+p_sight.c,354
+rcsid[rcsid25,781
+fixed_t		sightzstart;39,966
+fixed_t		topslope;40,1008
+fixed_t		bottomslope;41,1027
+divline_t	strace;43,1089
+fixed_t		t2x;44,1126
+fixed_t		t2y;45,1140
+int		sightcounts[sightcounts47,1155
+P_DivlineSide55,1253
+P_InterceptVector2109,2099
+boolean P_CrossSubsector 135,2606
+boolean P_CrossBSPNode 257,5206
+P_CheckSight300,6123
+
+p_spec.c,1249
+rcsid[rcsid29,923
+    boolean	istexture;62,1416
+    int		picnum;63,1439
+    int		basepic;64,1456
+    int		numpics;65,1474
+    int		speed;66,1492
+} anim_t;68,1513
+    boolean	istexture;75,1583
+    char	endname[endname76,1632
+    char	startname[startname77,1653
+    int		speed;78,1676
+} animdef_t;79,1692
+#define MAXANIMS 83,1708
+animdef_t		animdefs[animdefs101,2097
+anim_t		anims[anims134,3004
+anim_t*		lastanim;135,3029
+#define MAXLINEANIMS 141,3088
+void P_InitPicAnims 148,3205
+getSide204,4336
+getSector220,4629
+twoSided235,4905
+getNextSector251,5125
+fixed_t	P_FindLowestFloorSurrounding(270,5418
+fixed_t	P_FindHighestFloorSurrounding(297,5892
+#define MAX_ADJOINING_SECTORS 326,6431
+P_FindNextHighestFloor329,6477
+P_FindLowestCeilingSurrounding(382,7403
+fixed_t	P_FindHighestCeilingSurrounding(407,7831
+P_FindSectorFromLineTag434,8261
+P_FindMinSurroundingLight454,8499
+P_CrossSpecialLine492,9126
+P_ShootSpecialLine959,17098
+void P_PlayerInSpecialSector 1009,17858
+boolean		levelTimer;1080,19156
+int		levelTimeCount;1081,19177
+void P_UpdateSpecials 1083,19199
+int EV_DoDonut(1163,20751
+short		numlinespecials;1234,22403
+line_t*		linespeciallist[linespeciallist1235,22427
+void P_SpawnSpecials 1239,22504
+
+p_switch.c,295
+rcsid[rcsid26,774
+switchlist_t alphSwitchList[alphSwitchList48,1094
+int		switchlist[switchlist99,2544
+int		numswitches;100,2578
+button_t        buttonlist[buttonlist101,2596
+void P_InitSwitchList(107,2702
+P_StartButton155,3617
+P_ChangeSwitchTexture201,4373
+P_UseSpecialLine276,5757
+
+p_telept.c,39
+rcsid[rcsid25,739
+EV_Teleport48,964
+
+p_tick.c,243
+rcsid[rcsid26,769
+int	leveltime;34,898
+thinker_t	thinkercap;47,1159
+void P_InitThinkers 53,1207
+void P_AddThinker 65,1364
+void P_RemoveThinker 80,1667
+void P_AllocateThinker 92,1870
+void P_RunThinkers 101,1944
+void P_Ticker 130,2492
+
+p_user.c,256
+rcsid[rcsid28,799
+#define INVERSECOLORMAP	41,1006
+#define MAXBOB	49,1076
+boolean		onground;51,1102
+P_Thrust59,1193
+void P_CalcHeight 77,1492
+void P_MovePlayer 148,3117
+#define ANG5 180,3831
+void P_DeathThink 182,3859
+void P_PlayerThink 236,4950
+
+r_bsp.c,657
+rcsid[rcsid26,776
+seg_t*		curline;47,1049
+side_t*		sidedef;48,1066
+line_t*		linedef;49,1084
+sector_t*	frontsector;50,1102
+sector_t*	backsector;51,1125
+drawseg_t	drawsegs[drawsegs53,1148
+drawseg_t*	ds_p;54,1181
+void R_ClearDrawSegs 68,1278
+    int	first;82,1453
+    int last;83,1468
+} cliprange_t;85,1487
+#define MAXSEGS	88,1504
+cliprange_t*	newend;91,1566
+cliprange_t	solidsegs[solidsegs92,1587
+R_ClipSolidWallSegment104,1771
+R_ClipPassWallSegment197,3598
+void R_ClearClipSegs 245,4493
+void R_AddLine 259,4785
+int	checkcoord[checkcoord365,7203
+boolean R_CheckBBox 381,7386
+void R_Subsector 497,9580
+void R_RenderBSPNode 552,10622
+
+r_data.c,1938
+rcsid[rcsid28,848
+    short	originx;71,1669
+    short	originy;72,1688
+    short	patch;73,1707
+    short	stepdir;74,1724
+    short	colormap;75,1743
+} mappatch_t;76,1763
+    char		name[name86,1920
+    boolean		masked;87,1939
+    short		width;88,1961
+    short		height;89,1979
+    void		**columndirectory;columndirectory90,1998
+    short		patchcount;91,2039
+    mappatch_t	patches[patches92,2062
+} maptexture_t;93,2089
+    int		originx;104,2351
+    int		originy;105,2370
+    int		patch;106,2388
+} texpatch_t;107,2404
+    char	name[name116,2627
+    short	width;117,2647
+    short	height;118,2664
+    short	patchcount;122,2779
+    texpatch_t	patches[patches123,2801
+} texture_t;125,2835
+int		firstflat;129,2851
+int		lastflat;130,2867
+int		numflats;131,2882
+int		firstpatch;133,2898
+int		lastpatch;134,2915
+int		numpatches;135,2931
+int		firstspritelump;137,2949
+int		lastspritelump;138,2971
+int		numspritelumps;139,2992
+int		numtextures;141,3014
+texture_t**	textures;142,3032
+int*			texturewidthmask;145,3056
+fixed_t*		textureheight;147,3111
+int*			texturecompositesize;148,3138
+short**			texturecolumnlump;149,3167
+unsigned short**	texturecolumnofs;150,3196
+byte**			texturecomposite;151,3231
+int*		flattranslation;154,3283
+int*		texturetranslation;155,3306
+fixed_t*	spritewidth;158,3361
+fixed_t*	spriteoffset;159,3384
+fixed_t*	spritetopoffset;160,3407
+lighttable_t	*colormaps;colormaps162,3434
+R_DrawColumnInCache185,3955
+void R_GenerateComposite 228,4717
+void R_GenerateLookup 296,6073
+R_GetColumn383,7939
+void R_InitTextures 411,8401
+void R_InitFlats 581,12702
+void R_InitSpriteLumps 603,13265
+void R_InitColormaps 633,14024
+void R_InitData 654,14487
+int R_FlatNumForName 672,14806
+int	R_CheckTextureNumForName 696,15169
+int	R_TextureNumForName 718,15511
+int		flatmemory;739,15784
+int		texturememory;740,15801
+int		spritememory;741,15821
+void R_PrecacheLevel 743,15841
+
+r_draw.c,1425
+rcsid[rcsid28,865
+#define MAXWIDTH	47,1133
+#define MAXHEIGHT	48,1157
+#define SBARHEIGHT	51,1223
+byte*		viewimage;63,1560
+int		viewwidth;64,1579
+int		scaledviewwidth;65,1595
+int		viewheight;66,1617
+int		viewwindowx;67,1634
+int		viewwindowy;68,1652
+byte*		ylookup[ylookup69,1671
+int		columnofs[columnofs70,1699
+byte		translations[translations76,1850
+lighttable_t*		dc_colormap;85,1952
+int			dc_x;86,1981
+int			dc_yl;87,1994
+int			dc_yh;88,2008
+fixed_t			dc_iscale;89,2022
+fixed_t			dc_texturemid;90,2044
+byte*			dc_source;93,2117
+int			dccount;96,2162
+void R_DrawColumn 105,2462
+void R_DrawColumn 155,3602
+void R_DrawColumnLow 211,4906
+#define FUZZTABLE	259,5808
+#define FUZZOFF	260,5831
+int	fuzzoffset[fuzzoffset263,5863
+int	fuzzpos 274,6354
+void R_DrawFuzzColumn 285,6614
+byte*	dc_translation;382,8621
+byte*	translationtables;383,8643
+void R_DrawTranslatedColumn 385,8669
+void R_InitTranslationTables 459,10139
+int			ds_y;500,11286
+int			ds_x1;501,11299
+int			ds_x2;502,11313
+lighttable_t*		ds_colormap;504,11327
+fixed_t			ds_xfrac;506,11357
+fixed_t			ds_yfrac;507,11378
+fixed_t			ds_xstep;508,11399
+fixed_t			ds_ystep;509,11420
+byte*			ds_source;512,11473
+int			dscount;515,11516
+void R_DrawSpan 520,11562
+void R_DrawSpan 570,12424
+void R_DrawSpanLow 643,13807
+R_InitBuffer696,14820
+void R_FillBackScreen 731,15533
+R_VideoErase818,17369
+void R_DrawViewBorder 843,17808
+
+r_main.c,1635
+static const char rcsid[rcsid27,823
+#define FIELDOFVIEW	48,1099
+int			viewangleoffset;52,1129
+int			validcount 55,1193
+lighttable_t*		fixedcolormap;58,1219
+int			centerx;61,1284
+int			centery;62,1299
+fixed_t			centerxfrac;64,1315
+fixed_t			centeryfrac;65,1338
+fixed_t			projection;66,1361
+int			framecount;69,1415
+int			sscount;71,1435
+int			linecount;72,1450
+int			loopcount;73,1467
+fixed_t			viewx;75,1485
+fixed_t			viewy;76,1502
+fixed_t			viewz;77,1519
+angle_t			viewangle;79,1537
+fixed_t			viewcos;81,1559
+fixed_t			viewsin;82,1578
+player_t*		viewplayer;84,1598
+int			detailshift;87,1643
+angle_t			clipangle;92,1699
+angle_t			xtoviewangle[xtoviewangle103,2108
+fixed_t*		finecosine 113,2379
+lighttable_t*		scalelight[scalelight116,2429
+lighttable_t*		scalelightfixed[scalelightfixed117,2484
+lighttable_t*		zlight[zlight118,2531
+int			extralight;121,2611
+R_AddPointToBox139,2863
+R_PointOnSide162,3237
+R_PointOnSegSide215,4040
+R_PointToAngle292,5256
+R_PointToAngle2378,6281
+R_PointToDist392,6442
+void R_InitPointToAngle 426,6884
+fixed_t R_ScaleFromGlobalAngle 453,7367
+    anglea 480,7912
+    angleb 481,7955
+    sinea 484,8043
+    sineb 485,8092
+    num 486,8140
+    den 487,8191
+	scale 499,8399
+void R_InitTables 509,8468
+void R_InitTextureMapping 544,8991
+#define DISTMAP	612,10505
+void R_InitLightTables 614,10525
+boolean		setsizeneeded;652,11320
+int		setblocks;653,11344
+int		setdetail;654,11360
+R_SetViewSize658,11383
+void R_ExecuteSetViewSize 671,11538
+void R_Init 773,13648
+R_PointInSubsector801,14257
+void R_SetupFrame 830,14696
+void R_RenderPlayerView 870,15420
+
+r_plane.c,1057
+rcsid[rcsid28,889
+planefunction_t		floorfunc;44,1123
+planefunction_t		ceilingfunc;45,1151
+#define MAXVISPLANES	52,1240
+visplane_t		visplanes[visplanes53,1265
+visplane_t*		lastvisplane;54,1302
+visplane_t*		floorplane;55,1329
+visplane_t*		ceilingplane;56,1354
+#define MAXOPENINGS	59,1387
+short			openings[openings60,1422
+short*			lastopening;61,1453
+short			floorclip[floorclip69,1606
+short			ceilingclip[ceilingclip70,1638
+int			spanstart[spanstart76,1753
+int			spanstop[spanstop77,1784
+lighttable_t**		planezlight;82,1840
+fixed_t			planeheight;83,1869
+fixed_t			yslope[yslope85,1893
+fixed_t			distscale[distscale86,1925
+fixed_t			basexscale;87,1959
+fixed_t			baseyscale;88,1981
+fixed_t			cachedheight[cachedheight90,2004
+fixed_t			cacheddistance[cacheddistance91,2042
+fixed_t			cachedxstep[cachedxstep92,2082
+fixed_t			cachedystep[cachedystep93,2119
+void R_InitPlanes 101,2206
+R_MapPlane121,2398
+void R_ClearPlanes 185,3639
+R_FindPlane218,4277
+R_CheckPlane266,5091
+R_MakeSpans331,5994
+void R_DrawPlanes 367,6429
+
+r_segs.c,1106
+rcsid[rcsid26,783
+boolean		segtextured;46,1087
+boolean		markfloor;49,1156
+boolean		markceiling;50,1177
+boolean		maskedtexture;52,1200
+int		toptexture;53,1224
+int		bottomtexture;54,1241
+int		midtexture;55,1261
+angle_t		rw_normalangle;58,1280
+int		rw_angle1;60,1329
+int		rw_x;65,1369
+int		rw_stopx;66,1380
+angle_t		rw_centerangle;67,1395
+fixed_t		rw_offset;68,1420
+fixed_t		rw_distance;69,1440
+fixed_t		rw_scale;70,1462
+fixed_t		rw_scalestep;71,1481
+fixed_t		rw_midtexturemid;72,1504
+fixed_t		rw_toptexturemid;73,1531
+fixed_t		rw_bottomtexturemid;74,1558
+int		worldtop;76,1589
+int		worldbottom;77,1604
+int		worldhigh;78,1622
+int		worldlow;79,1638
+fixed_t		pixhigh;81,1654
+fixed_t		pixlow;82,1672
+fixed_t		pixhighstep;83,1689
+fixed_t		pixlowstep;84,1711
+fixed_t		topfrac;86,1733
+fixed_t		topstep;87,1751
+fixed_t		bottomfrac;89,1770
+fixed_t		bottomstep;90,1791
+lighttable_t**	walllights;93,1814
+short*		maskedtexturecol;95,1842
+R_RenderMaskedSegRange103,1908
+#define HEIGHTBITS	203,4451
+#define HEIGHTUNIT	204,4474
+void R_RenderSegLoop 206,4511
+R_StoreWallRange375,7820
+
+r_sky.c,128
+rcsid[rcsid29,925
+int			skyflatnum;47,1184
+int			skytexture;48,1202
+int			skytexturemid;49,1220
+void R_InitSkyMap 57,1308
+
+r_things.c,1288
+rcsid[rcsid26,781
+#define MINZ	46,1039
+#define BASEYCENTER	47,1068
+    int		x1;56,1175
+    int		x2;57,1188
+    int		column;59,1203
+    int		topclip;60,1220
+    int		bottomclip;61,1238
+} maskdraw_t;63,1260
+fixed_t		pspritescale;74,1538
+fixed_t		pspriteiscale;75,1561
+lighttable_t**	spritelights;77,1586
+short		negonearray[negonearray81,1691
+short		screenheightarray[screenheightarray82,1724
+spritedef_t*	sprites;91,1873
+int		numsprites;92,1895
+spriteframe_t	sprtemp[sprtemp94,1913
+int		maxframe;95,1940
+char*		spritename;96,1955
+R_InstallSpriteLump106,2049
+void R_InitSpriteDefs 177,3971
+vissprite_t	vissprites[vissprites289,6389
+vissprite_t*	vissprite_p;290,6428
+int		newvissprite;291,6454
+void R_InitSprites 299,6527
+void R_ClearSprites 317,6740
+vissprite_t	overflowsprite;326,6827
+vissprite_t* R_NewVisSprite 328,6856
+short*		mfloorclip;345,7182
+short*		mceilingclip;346,7202
+fixed_t		spryscale;348,7225
+fixed_t		sprtopscreen;349,7245
+void R_DrawMaskedColumn 351,7269
+R_DrawVisSprite397,8339
+void R_ProjectSprite 452,9607
+void R_AddSprites 613,12959
+void R_DrawPSprite 646,13734
+void R_DrawPlayerSprites 746,15994
+vissprite_t	vsprsortedhead;784,16681
+void R_SortVisSprites 787,16711
+void R_DrawSprite 842,17819
+void R_DrawMasked 958,20125
+
+sounds.c,88
+rcsid[rcsid27,789
+musicinfo_t S_music[S_music37,938
+sfxinfo_t S_sfx[S_sfx114,2359
+
+s_sound.c,1232
+rcsid[rcsid25,728
+const char snd_prefixen[snd_prefixen48,1060
+#define S_MAX_VOLUME	51,1153
+#define S_CLIPPING_DIST	55,1248
+#define S_CLOSE_DIST	61,1456
+#define S_ATTENUATOR	64,1494
+#define NORM_VOLUME 67,1583
+#define NORM_PITCH 69,1623
+#define NORM_PRIORITY	70,1652
+#define NORM_SEP	71,1678
+#define S_PITCH_PERTURB	73,1701
+#define S_STEREO_SWING	74,1728
+#define S_IFRACVOL	77,1808
+#define NA	79,1832
+#define S_NUMCHANNELS	80,1847
+    sfxinfo_t*	sfxinfo;96,2194
+    void*	origin;99,2242
+    int		handle;102,2301
+} channel_t;104,2323
+static channel_t*	channels;108,2371
+int 		snd_SfxVolume 113,2522
+int 		snd_MusicVolume 116,2593
+static boolean		mus_paused;121,2657
+static musicinfo_t*	mus_playing=124,2719
+int			numChannels;129,2843
+static int		nextcleanup;131,2864
+void S_Init161,3251
+void S_Start(202,4223
+S_StartSoundAtVolume255,5242
+S_StartSound398,8022
+void S_StopSound(471,9513
+void S_PauseSound(497,9789
+void S_ResumeSound(506,9921
+void S_UpdateSounds(519,10088
+void S_SetMusicVolume(616,11912
+void S_SetSfxVolume(631,12150
+void S_StartMusic(644,12371
+S_ChangeMusic650,12441
+void S_StopMusic(689,13167
+void S_StopChannel(708,13450
+S_AdjustSoundParams753,14242
+S_getChannel828,15747
+
+st_lib.c,312
+rcsid[rcsid26,753
+patch_t*		sttminus;56,1156
+void STlib_init(58,1177
+STlib_initNum66,1282
+STlib_drawNum91,1653
+STlib_updateNum153,2676
+STlib_initPercent163,2789
+STlib_updatePercent180,2999
+STlib_initMultIcon193,3192
+STlib_updateMultIcon212,3415
+STlib_initBinIcon245,4054
+STlib_updateBinIcon264,4270
+
+st_stuff.c,6754
+rcsid[rcsid27,857
+#define STARTREDPALS	71,1477
+#define STARTBONUSPALS	72,1501
+#define NUMREDPALS	73,1527
+#define NUMBONUSPALS	74,1550
+#define RADIATIONPAL	76,1606
+#define ST_FACEPROBABILITY	80,1701
+#define ST_TOGGLECHAT	83,1750
+#define ST_X	86,1810
+#define ST_X2	87,1828
+#define ST_FX 89,1850
+#define ST_FY 90,1872
+#define ST_TALLNUMWIDTH	94,1957
+#define ST_NUMPAINFACES	97,2030
+#define ST_NUMSTRAIGHTFACES	98,2057
+#define ST_NUMTURNFACES	99,2087
+#define ST_NUMSPECIALFACES	100,2114
+#define ST_FACESTRIDE 102,2145
+#define ST_NUMEXTRAFACES	105,2237
+#define ST_NUMFACES 107,2266
+#define ST_TURNOFFSET	110,2348
+#define ST_OUCHOFFSET	111,2393
+#define ST_EVILGRINOFFSET	112,2450
+#define ST_RAMPAGEOFFSET	113,2497
+#define ST_GODFACE	114,2547
+#define ST_DEADFACE	115,2600
+#define ST_FACESX	117,2638
+#define ST_FACESY	118,2662
+#define ST_EVILGRINCOUNT	120,2687
+#define ST_STRAIGHTFACECOUNT	121,2725
+#define ST_TURNCOUNT	122,2766
+#define ST_OUCHCOUNT	123,2800
+#define ST_RAMPAGEDELAY	124,2834
+#define ST_MUCHPAIN	126,2872
+#define ST_AMMOWIDTH	138,3190
+#define ST_AMMOX	139,3215
+#define ST_AMMOY	140,3237
+#define ST_HEALTHWIDTH	143,3283
+#define ST_HEALTHX	144,3310
+#define ST_HEALTHY	145,3334
+#define ST_ARMSX	148,3375
+#define ST_ARMSY	149,3398
+#define ST_ARMSBGX	150,3421
+#define ST_ARMSBGY	151,3446
+#define ST_ARMSXSPACE	152,3471
+#define ST_ARMSYSPACE	153,3497
+#define ST_FRAGSX	156,3538
+#define ST_FRAGSY	157,3562
+#define ST_FRAGSWIDTH	158,3587
+#define ST_ARMORWIDTH	161,3634
+#define ST_ARMORX	162,3659
+#define ST_ARMORY	163,3683
+#define ST_KEY0WIDTH	166,3731
+#define ST_KEY0HEIGHT	167,3755
+#define ST_KEY0X	168,3780
+#define ST_KEY0Y	169,3803
+#define ST_KEY1WIDTH	170,3826
+#define ST_KEY1X	171,3861
+#define ST_KEY1Y	172,3884
+#define ST_KEY2WIDTH	173,3907
+#define ST_KEY2X	174,3942
+#define ST_KEY2Y	175,3965
+#define ST_AMMO0WIDTH	178,4012
+#define ST_AMMO0HEIGHT	179,4037
+#define ST_AMMO0X	180,4063
+#define ST_AMMO0Y	181,4087
+#define ST_AMMO1WIDTH	182,4111
+#define ST_AMMO1X	183,4148
+#define ST_AMMO1Y	184,4172
+#define ST_AMMO2WIDTH	185,4196
+#define ST_AMMO2X	186,4233
+#define ST_AMMO2Y	187,4257
+#define ST_AMMO3WIDTH	188,4281
+#define ST_AMMO3X	189,4318
+#define ST_AMMO3Y	190,4342
+#define ST_MAXAMMO0WIDTH	194,4439
+#define ST_MAXAMMO0HEIGHT	195,4467
+#define ST_MAXAMMO0X	196,4496
+#define ST_MAXAMMO0Y	197,4522
+#define ST_MAXAMMO1WIDTH	198,4548
+#define ST_MAXAMMO1X	199,4591
+#define ST_MAXAMMO1Y	200,4617
+#define ST_MAXAMMO2WIDTH	201,4643
+#define ST_MAXAMMO2X	202,4686
+#define ST_MAXAMMO2Y	203,4712
+#define ST_MAXAMMO3WIDTH	204,4738
+#define ST_MAXAMMO3X	205,4781
+#define ST_MAXAMMO3Y	206,4807
+#define ST_WEAPON0X	209,4844
+#define ST_WEAPON0Y	210,4871
+#define ST_WEAPON1X	213,4909
+#define ST_WEAPON1Y	214,4936
+#define ST_WEAPON2X	217,4976
+#define ST_WEAPON2Y	218,5003
+#define ST_WEAPON3X	221,5050
+#define ST_WEAPON3Y	222,5077
+#define ST_WEAPON4X	225,5118
+#define ST_WEAPON4Y	226,5145
+#define ST_WEAPON5X	229,5180
+#define ST_WEAPON5Y	230,5206
+#define ST_WPNSX	233,5247
+#define ST_WPNSY	234,5271
+#define ST_DETHX	237,5310
+#define ST_DETHY	238,5333
+#define ST_MSGTEXTX	244,5496
+#define ST_MSGTEXTY	245,5520
+#define ST_MSGWIDTH	247,5579
+#define ST_MSGHEIGHT	249,5633
+#define ST_OUTTEXTX	251,5658
+#define ST_OUTTEXTY	252,5682
+#define ST_OUTWIDTH	255,5738
+#define ST_OUTHEIGHT	257,5787
+#define ST_MAPWIDTH	259,5812
+#define ST_MAPTITLEX 262,5889
+#define ST_MAPTITLEY	265,5964
+#define ST_MAPHEIGHT	266,5988
+static player_t*	plyr;270,6042
+static boolean		st_firsttime;273,6102
+static int		veryfirsttime 276,6172
+static int		lu_palette;279,6231
+static unsigned int	st_clock;282,6275
+static int		st_msgcounter=285,6342
+static st_chatstateenum_t	st_chatstate;288,6394
+static st_stateenum_t	st_gamestate;291,6473
+static boolean		st_statusbaron;294,6557
+static boolean		st_chat;297,6627
+static boolean		st_oldchat;300,6698
+static boolean		st_cursoron;303,6768
+static boolean		st_notdeathmatch;306,6813
+static boolean		st_armson;309,6882
+static boolean		st_fragson;312,6925
+static patch_t*		sbar;315,6972
+static patch_t*		tallnum[tallnum318,7017
+static patch_t*		tallpercent;321,7063
+static patch_t*		shortnum[shortnum324,7138
+static patch_t*		keys[keys327,7195
+static patch_t*		faces[faces330,7253
+static patch_t*		faceback;333,7310
+static patch_t*		armsbg;336,7357
+static patch_t*		arms[arms339,7411
+static st_number_t	w_ready;342,7465
+static st_number_t	w_frags;345,7541
+static st_percent_t	w_health;348,7587
+static st_binicon_t	w_armsbg;351,7637
+static st_multicon_t	w_arms[w_arms355,7698
+static st_multicon_t	w_faces;358,7753
+static st_multicon_t	w_keyboxes[w_keyboxes361,7804
+static st_percent_t	w_armor;364,7857
+static st_number_t	w_ammo[w_ammo367,7903
+static st_number_t	w_maxammo[w_maxammo370,7954
+static int	st_fragscount;375,8032
+static int	st_oldhealth 378,8099
+static boolean	oldweaponsowned[oldweaponsowned381,8152
+static int	st_facecount 384,8227
+static int	st_faceindex 387,8296
+static int	keyboxes[keyboxes390,8368
+static int	st_randomnumber;393,8422
+unsigned char	cheat_mus_seq[cheat_mus_seq400,8557
+unsigned char	cheat_choppers_seq[cheat_choppers_seq405,8643
+unsigned char	cheat_god_seq[cheat_god_seq410,8764
+unsigned char	cheat_ammo_seq[cheat_ammo_seq415,8851
+unsigned char	cheat_ammonokey_seq[cheat_ammonokey_seq420,8938
+unsigned char	cheat_noclip_seq[cheat_noclip_seq427,9082
+unsigned char	cheat_commercial_noclip_seq[cheat_commercial_noclip_seq434,9213
+unsigned char	cheat_powerup_seq[cheat_powerup_seq441,9323
+unsigned char	cheat_clev_seq[cheat_clev_seq453,9923
+unsigned char	cheat_mypos_seq[cheat_mypos_seq460,10049
+cheatseq_t	cheat_mus 467,10166
+cheatseq_t	cheat_god 468,10211
+cheatseq_t	cheat_ammo 469,10256
+cheatseq_t	cheat_ammonokey 470,10303
+cheatseq_t	cheat_noclip 471,10360
+cheatseq_t	cheat_commercial_noclip 472,10411
+cheatseq_t	cheat_powerup[cheat_powerup474,10485
+cheatseq_t	cheat_choppers 485,10751
+cheatseq_t	cheat_clev 486,10806
+cheatseq_t	cheat_mypos 487,10853
+void ST_refreshBackground(499,10981
+ST_Responder 518,11278
+int ST_calcPainOffset(729,15822
+void ST_updateFaceWidget(752,16328
+void ST_updateWidgets(924,19453
+void ST_Ticker 988,20992
+static int st_palette 998,21128
+void ST_doPaletteStuff(1000,21156
+void ST_drawWidgets(1054,22039
+void ST_doRefresh(1089,22771
+void ST_diffDraw(1102,22968
+void ST_Drawer 1108,23049
+void ST_loadGraphics(1124,23434
+void ST_loadData(1201,25547
+void ST_unloadGraphics(1207,25644
+void ST_unloadData(1244,26373
+void ST_initData(1249,26428
+void ST_createWidgets(1282,26917
+static boolean	st_stopped 1441,29986
+void ST_Start 1444,30022
+void ST_Stop 1456,30151
+void ST_Init 1466,30288
+
+tables.c,151
+rcsid[rcsid40,1169
+SlopeDiv50,1262
+int finetangent[finetangent67,1454
+int finesine[finesine584,31932
+angle_t tantoangle[tantoangle1870,102787
+
+v_video.c,330
+rcsid[rcsid28,856
+byte*				screens[screens44,1120
+int				dirtybox[dirtybox46,1144
+byte gammatable[gammatable51,1202
+int	usegamma;137,6450
+V_MarkRect143,6496
+V_CopyRect158,6679
+V_DrawPatch204,7489
+V_DrawPatchFlipped271,8914
+V_DrawPatchDirect337,10233
+V_DrawBlock405,11592
+V_GetBlock445,12148
+void V_Init 482,12598
+
+wi_stuff.c,4296
+rcsid[rcsid25,746
+#define NUMEPISODES	66,1526
+#define NUMMAPS	67,1548
+#define WI_TITLEY	80,1779
+#define WI_SPACINGY 81,1800
+#define SP_STATSX	84,1853
+#define SP_STATSY	85,1875
+#define SP_TIMEX	87,1898
+#define SP_TIMEY	88,1919
+#define NG_STATSY	92,1975
+#define NG_STATSX	93,1997
+#define NG_SPACINGX 95,2059
+#define DM_MATRIXX	99,2109
+#define DM_MATRIXY	100,2132
+#define DM_SPACINGX	102,2156
+#define DM_TOTALSX	104,2181
+#define DM_KILLERSX	106,2206
+#define DM_KILLERSY	107,2230
+#define DM_VICTIMSX 108,2255
+#define DM_VICTIMSY	109,2282
+    ANIM_ALWAYS,116,2325
+    ANIM_RANDOM,117,2342
+    ANIM_LEVEL118,2359
+} animenum_t;120,2375
+    int		x;124,2407
+    int		y;125,2419
+} point_t;127,2436
+    animenum_t	type;136,2529
+    int		period;139,2592
+    int		nanims;142,2644
+    point_t	loc;145,2691
+    int		data1;150,2789
+    int		data2;155,2879
+    patch_t*	p[p158,2945
+    int		nexttic;163,3084
+    int		lastdrawn;166,3137
+    int		ctr;169,3194
+    int		state;172,3260
+} anim_t;174,3279
+static point_t lnodes[lnodes177,3291
+static anim_t epsd0animinfo[epsd0animinfo226,4768
+static anim_t epsd1animinfo[epsd1animinfo240,5284
+static anim_t epsd2animinfo[epsd2animinfo253,5780
+static int NUMANIMS[NUMANIMS263,6104
+static anim_t *anims[anims270,6270
+#define FB 285,6421
+#define SP_KILLS	289,6464
+#define SP_ITEMS	290,6484
+#define SP_SECRET	291,6504
+#define SP_FRAGS	292,6525
+#define SP_TIME	293,6546
+#define SP_PAR	294,6567
+#define SP_PAUSE	296,6593
+#define SHOWNEXTLOCDELAY	299,6628
+static int		acceleratestage;304,6739
+static int		me;307,6782
+static stateenum_t	state;310,6827
+static wbstartstruct_t*	wbs;313,6903
+static wbplayerstruct_t* plrs;315,6933
+static int 		cnt;318,7008
+static int 		bcnt;321,7072
+static int 		firstrefresh;324,7139
+static int		cnt_kills[cnt_kills326,7168
+static int		cnt_items[cnt_items327,7203
+static int		cnt_secret[cnt_secret328,7238
+static int		cnt_time;329,7274
+static int		cnt_par;330,7296
+static int		cnt_pause;331,7317
+static int		NUMCMAPS;334,7367
+static patch_t*		bg;342,7442
+static patch_t*		yah[yah345,7488
+static patch_t*		splat;348,7524
+static patch_t*		percent;351,7566
+static patch_t*		colon;352,7592
+static patch_t*		num[num355,7632
+static patch_t*		wiminus;358,7673
+static patch_t*		finished;361,7724
+static patch_t*		entering;364,7774
+static patch_t*		sp_secret;367,7815
+static patch_t*		kills;370,7882
+static patch_t*		secret;371,7906
+static patch_t*		items;372,7931
+static patch_t*		frags;373,7955
+static patch_t*		time;376,7995
+static patch_t*		par;377,8018
+static patch_t*		sucks;378,8040
+static patch_t*		killers;381,8089
+static patch_t*		victims;382,8115
+static patch_t*		total;385,8181
+static patch_t*		star;386,8205
+static patch_t*		bstar;387,8228
+static patch_t*		p[p390,8279
+static patch_t*		bp[bp393,8339
+static patch_t**	lnames;396,8416
+void WI_slamBackground(406,8524
+boolean WI_Responder(414,8751
+void WI_drawLF(421,8842
+void WI_drawEL(439,9204
+WI_drawOnLnode456,9526
+void WI_initAnimatedBack(503,10250
+void WI_updateAnimatedBack(532,10779
+void WI_drawAnimatedBack(583,11617
+WI_drawNum612,12060
+WI_drawPercent669,12791
+WI_drawTime688,13023
+void WI_End(724,13457
+void WI_initNoState(730,13531
+void WI_updateNoState(737,13622
+static boolean		snl_pointeron 749,13742
+void WI_initShowNextLoc(752,13783
+void WI_updateShowNextLoc(761,13934
+void WI_drawShowNextLoc(771,14098
+void WI_drawNoState(812,14784
+int WI_fragSum(818,14867
+static int		dm_state;843,15228
+static int		dm_frags[dm_frags844,15250
+static int		dm_totals[dm_totals845,15296
+void WI_initDeathmatchStats(849,15334
+void WI_updateDeathmatchStats(878,15710
+void WI_drawDeathmatchStats(981,17243
+static int	cnt_frags[cnt_frags1074,18891
+static int	dofrags;1075,18925
+static int	ng_state;1076,18945
+void WI_initNetgameStats(1078,18967
+void WI_updateNetgameStats(1106,19344
+void WI_drawNetgameStats(1261,21983
+static int	sp_state;1316,23187
+void WI_initStats(1318,23209
+void WI_updateStats(1330,23440
+void WI_drawStats(1436,25453
+void WI_checkForAccelerate(1470,26309
+void WI_Ticker(1503,26909
+void WI_loadData(1538,27479
+void WI_unloadData(1708,31116
+void WI_Drawer 1772,32552
+void WI_initVariables(1796,32869
+void WI_Start(1838,33603
+
+w_wad.c,689
+rcsid[rcsid26,771
+#define O_BINARY	38,1015
+lumpinfo_t*		lumpinfo;61,1261
+int			numlumps;62,1286
+void**			lumpcache;64,1303
+#define strcmpi	67,1325
+void strupr 69,1353
+int filelength 74,1422
+ExtractFileBase86,1593
+int			reloadlump;137,2538
+char*			reloadname;138,2556
+void W_AddFile 141,2578
+void W_Reload 238,4697
+void W_InitMultipleFiles 294,6064
+void W_InitFile 327,6669
+int W_NumLumps 341,6829
+int W_CheckNumForName 353,6940
+	char	s[s356,6989
+	int	x[x357,7001
+int W_GetNumForName 401,7703
+int W_LumpLength 418,7967
+W_ReadLump434,8212
+W_CacheLumpNum478,8955
+W_CacheLumpName510,9473
+int		info[info521,9598
+int		profilecount;522,9619
+void W_Profile 524,9639
+
+z_zone.c,445
+rcsid[rcsid25,754
+#define ZONEID	43,1193
+    int		size;49,1282
+    memblock_t	blocklist;52,1337
+    memblock_t*	rover;54,1368
+} memzone_t;56,1396
+memzone_t*	mainzone;60,1412
+void Z_ClearZone 67,1457
+void Z_Init 93,1975
+void Z_Free 122,2596
+#define MINFRAGMENT	180,3658
+Z_Malloc184,3690
+Z_FreeTags297,5955
+Z_DumpHeap327,6421
+void Z_FileDumpHeap 366,7327
+void Z_CheckHeap 399,8103
+Z_ChangeTag2429,8704
+int Z_FreeMemory 451,9105
+
+am_map.h,115
+#define __AMMAP_H__23,730
+#define AM_MSGHEADER 26,782
+#define AM_MSGENTERED 27,825
+#define AM_MSGEXITED 28,873
+
+d_englsh.h,8133
+#define __D_ENGLSH__24,786
+#define D_DEVSTR	33,868
+#define D_CDROM	34,910
+#define PRESSKEY 39,995
+#define PRESSYN 40,1028
+#define QUITMSG	41,1061
+#define LOADNET 42,1127
+#define QLOADNET	43,1197
+#define QSAVESPOT	44,1266
+#define SAVEDEAD 45,1339
+#define QSPROMPT 46,1409
+#define QLPROMPT	47,1480
+#define NEWGAME	49,1560
+#define NIGHTMARE	53,1650
+#define SWSTRING	57,1746
+#define MSGOFF	61,1864
+#define MSGON	62,1894
+#define NETEND	63,1923
+#define ENDGAME	64,1977
+#define DOSY	66,2046
+#define DETAILHI	68,2081
+#define DETAILLO	69,2112
+#define GAMMALVL0	70,2142
+#define GAMMALVL1	71,2183
+#define GAMMALVL2	72,2228
+#define GAMMALVL3	73,2273
+#define GAMMALVL4	74,2318
+#define EMPTYSTRING	75,2363
+#define GOTARMOR	80,2416
+#define GOTMEGA	81,2456
+#define GOTHTHBONUS	82,2499
+#define GOTARMBONUS	83,2547
+#define GOTSTIM	84,2595
+#define GOTMEDINEED	85,2635
+#define GOTMEDIKIT	86,2699
+#define GOTSUPER	87,2741
+#define GOTBLUECARD	89,2774
+#define GOTYELWCARD	90,2822
+#define GOTREDCARD	91,2872
+#define GOTBLUESKUL	92,2918
+#define GOTYELWSKUL	93,2968
+#define GOTREDSKULL	94,3020
+#define GOTINVUL	96,3070
+#define GOTBERSERK	97,3106
+#define GOTINVIS	98,3136
+#define GOTSUIT	99,3176
+#define GOTMAP	100,3219
+#define GOTVISOR	101,3254
+#define GOTMSPHERE	102,3299
+#define GOTCLIP	104,3333
+#define GOTCLIPBOX	105,3369
+#define GOTROCKET	106,3418
+#define GOTROCKBOX	107,3458
+#define GOTCELL	108,3507
+#define GOTCELLBOX	109,3551
+#define GOTSHELLS	110,3603
+#define GOTSHELLBOX	111,3651
+#define GOTBACKPACK	112,3708
+#define GOTBFG9000	114,3766
+#define GOTCHAINGUN	115,3818
+#define GOTCHAINSAW	116,3862
+#define GOTLAUNCHER	117,3913
+#define GOTPLASMA	118,3964
+#define GOTSHOTGUN	119,4008
+#define GOTSHOTGUN2	120,4050
+#define PD_BLUEO	125,4119
+#define PD_REDO	126,4182
+#define PD_YELLOWO	127,4243
+#define PD_BLUEK	128,4310
+#define PD_REDK	129,4367
+#define PD_YELLOWK	130,4422
+#define GGSAVED	135,4502
+#define HUSTR_MSGU	140,4553
+#define HUSTR_E1M1	142,4592
+#define HUSTR_E1M2	143,4626
+#define HUSTR_E1M3	144,4667
+#define HUSTR_E1M4	145,4709
+#define HUSTR_E1M5	146,4752
+#define HUSTR_E1M6	147,4790
+#define HUSTR_E1M7	148,4836
+#define HUSTR_E1M8	149,4880
+#define HUSTR_E1M9	150,4922
+#define HUSTR_E2M1	152,4964
+#define HUSTR_E2M2	153,5006
+#define HUSTR_E2M3	154,5050
+#define HUSTR_E2M4	155,5086
+#define HUSTR_E2M5	156,5124
+#define HUSTR_E2M6	157,5166
+#define HUSTR_E2M7	158,5213
+#define HUSTR_E2M8	159,5254
+#define HUSTR_E2M9	160,5296
+#define HUSTR_E3M1	162,5344
+#define HUSTR_E3M2	163,5381
+#define HUSTR_E3M3	164,5426
+#define HUSTR_E3M4	165,5465
+#define HUSTR_E3M5	166,5506
+#define HUSTR_E3M6	167,5550
+#define HUSTR_E3M7	168,5588
+#define HUSTR_E3M8	169,5621
+#define HUSTR_E3M9	170,5652
+#define HUSTR_E4M1	172,5688
+#define HUSTR_E4M2	173,5728
+#define HUSTR_E4M3	174,5770
+#define HUSTR_E4M4	175,5814
+#define HUSTR_E4M5	176,5853
+#define HUSTR_E4M6	177,5897
+#define HUSTR_E4M7	178,5946
+#define HUSTR_E4M8	179,5991
+#define HUSTR_E4M9	180,6033
+#define HUSTR_1	182,6066
+#define HUSTR_2	183,6102
+#define HUSTR_3	184,6140
+#define HUSTR_4	185,6179
+#define HUSTR_5	186,6216
+#define HUSTR_6	187,6261
+#define HUSTR_7	188,6300
+#define HUSTR_8	189,6339
+#define HUSTR_9	190,6383
+#define HUSTR_10	191,6418
+#define HUSTR_11	192,6462
+#define HUSTR_12	194,6512
+#define HUSTR_13	195,6553
+#define HUSTR_14	196,6591
+#define HUSTR_15	197,6636
+#define HUSTR_16	198,6681
+#define HUSTR_17	199,6718
+#define HUSTR_18	200,6757
+#define HUSTR_19	201,6800
+#define HUSTR_20	202,6841
+#define HUSTR_21	204,6879
+#define HUSTR_22	205,6916
+#define HUSTR_23	206,6959
+#define HUSTR_24	207,7003
+#define HUSTR_25	208,7042
+#define HUSTR_26	209,7082
+#define HUSTR_27	210,7131
+#define HUSTR_28	211,7174
+#define HUSTR_29	212,7220
+#define HUSTR_30	213,7264
+#define HUSTR_31	215,7306
+#define HUSTR_32	216,7347
+#define PHUSTR_1	218,7384
+#define PHUSTR_2	219,7418
+#define PHUSTR_3	220,7460
+#define PHUSTR_4	221,7494
+#define PHUSTR_5	222,7528
+#define PHUSTR_6	223,7567
+#define PHUSTR_7	224,7608
+#define PHUSTR_8	225,7647
+#define PHUSTR_9	226,7681
+#define PHUSTR_10	227,7719
+#define PHUSTR_11	228,7759
+#define PHUSTR_12	230,7797
+#define PHUSTR_13	231,7833
+#define PHUSTR_14	232,7873
+#define PHUSTR_15	233,7911
+#define PHUSTR_16	234,7954
+#define PHUSTR_17	235,7993
+#define PHUSTR_18	236,8032
+#define PHUSTR_19	237,8074
+#define PHUSTR_20	238,8108
+#define PHUSTR_21	240,8156
+#define PHUSTR_22	241,8193
+#define PHUSTR_23	242,8242
+#define PHUSTR_24	243,8282
+#define PHUSTR_25	244,8331
+#define PHUSTR_26	245,8384
+#define PHUSTR_27	246,8421
+#define PHUSTR_28	247,8463
+#define PHUSTR_29	248,8504
+#define PHUSTR_30	249,8552
+#define PHUSTR_31	251,8603
+#define PHUSTR_32	252,8642
+#define THUSTR_1	254,8681
+#define THUSTR_2	255,8724
+#define THUSTR_3	256,8762
+#define THUSTR_4	257,8804
+#define THUSTR_5	258,8841
+#define THUSTR_6	259,8876
+#define THUSTR_7	260,8916
+#define THUSTR_8	261,8951
+#define THUSTR_9	262,8985
+#define THUSTR_10	263,9024
+#define THUSTR_11	264,9065
+#define THUSTR_12	266,9113
+#define THUSTR_13	267,9150
+#define THUSTR_14	268,9198
+#define THUSTR_15	269,9240
+#define THUSTR_16	270,9280
+#define THUSTR_17	271,9326
+#define THUSTR_18	272,9372
+#define THUSTR_19	273,9407
+#define THUSTR_20	274,9457
+#define THUSTR_21	276,9507
+#define THUSTR_22	277,9559
+#define THUSTR_23	278,9597
+#define THUSTR_24	279,9648
+#define THUSTR_25	280,9685
+#define THUSTR_26	281,9727
+#define THUSTR_27	282,9767
+#define THUSTR_28	283,9808
+#define THUSTR_29	284,9843
+#define THUSTR_30	285,9884
+#define THUSTR_31	287,9925
+#define THUSTR_32	288,9963
+#define HUSTR_CHATMACRO1	290,10004
+#define HUSTR_CHATMACRO2	291,10055
+#define HUSTR_CHATMACRO3	292,10090
+#define HUSTR_CHATMACRO4	293,10143
+#define HUSTR_CHATMACRO5	294,10176
+#define HUSTR_CHATMACRO6	295,10213
+#define HUSTR_CHATMACRO7	296,10262
+#define HUSTR_CHATMACRO8	297,10300
+#define HUSTR_CHATMACRO9	298,10349
+#define HUSTR_CHATMACRO0	299,10380
+#define HUSTR_TALKTOSELF1	301,10411
+#define HUSTR_TALKTOSELF2	302,10462
+#define HUSTR_TALKTOSELF3	303,10503
+#define HUSTR_TALKTOSELF4	304,10550
+#define HUSTR_TALKTOSELF5	305,10596
+#define HUSTR_MESSAGESENT	307,10643
+#define HUSTR_PLRGREEN	312,10769
+#define HUSTR_PLRINDIGO	313,10802
+#define HUSTR_PLRBROWN	314,10837
+#define HUSTR_PLRRED	315,10870
+#define HUSTR_KEYGREEN	317,10901
+#define HUSTR_KEYINDIGO	318,10928
+#define HUSTR_KEYBROWN	319,10956
+#define HUSTR_KEYRED	320,10983
+#define AMSTR_FOLLOWON	326,11028
+#define AMSTR_FOLLOWOFF	327,11068
+#define AMSTR_GRIDON	329,11111
+#define AMSTR_GRIDOFF	330,11142
+#define AMSTR_MARKEDSPOT	332,11176
+#define AMSTR_MARKSCLEARED	333,11215
+#define STSTR_MUS	339,11284
+#define STSTR_NOMUS	340,11318
+#define STSTR_DQDON	341,11362
+#define STSTR_DQDOFF	342,11408
+#define STSTR_KFAADDED	344,11456
+#define STSTR_FAADDED	345,11503
+#define STSTR_NCON	347,11549
+#define STSTR_NCOFF	348,11591
+#define STSTR_BEHOLD	350,11636
+#define STSTR_BEHOLDX	351,11705
+#define STSTR_CHOPPERS	353,11747
+#define STSTR_CLEV	354,11794
+#define E1TEXT 359,11855
+#define E2TEXT 377,12389
+#define E3TEXT 397,12959
+#define E4TEXT 417,13554
+#define C1TEXT 438,14183
+#define C2TEXT 454,14704
+#define C3TEXT 476,15456
+#define C4TEXT 490,15860
+#define C5TEXT 511,16479
+#define C6TEXT 521,16716
+#define P1TEXT 529,16859
+#define P2TEXT 546,17387
+#define P3TEXT 557,17644
+#define P4TEXT 571,18055
+#define P5TEXT 587,18609
+#define P6TEXT 595,18822
+#define T1TEXT 601,18960
+#define T2TEXT 616,19426
+#define T3TEXT 628,19798
+#define T4TEXT 638,20163
+#define T5TEXT 652,20620
+#define T6TEXT 660,20835
+#define CC_ZOMBIE	677,21299
+#define CC_SHOTGUN	678,21329
+#define CC_HEAVY	679,21362
+#define CC_IMP	680,21399
+#define CC_DEMON	681,21420
+#define CC_LOST	682,21445
+#define CC_CACO	683,21473
+#define CC_HELL	684,21501
+#define CC_BARON	685,21531
+#define CC_ARACH	686,21564
+#define CC_PAIN	687,21595
+#define CC_REVEN	688,21628
+#define CC_MANCU	689,21656
+#define CC_ARCH	690,21684
+#define CC_SPIDER	691,21712
+#define CC_CYBER	692,21754
+#define CC_HERO	693,21788
+
+d_event.h,853
+#define __D_EVENT__24,718
+    ev_keydown,37,827
+    ev_keyup,38,843
+    ev_mouse,39,857
+    ev_joystick40,871
+} evtype_t;41,887
+    evtype_t	type;46,937
+    int		data1;47,956
+    int		data2;48,1006
+    int		data3;49,1048
+} event_t;50,1090
+    ga_nothing,55,1119
+    ga_loadlevel,56,1135
+    ga_newgame,57,1153
+    ga_loadgame,58,1169
+    ga_savegame,59,1186
+    ga_playdemo,60,1203
+    ga_completed,61,1220
+    ga_victory,62,1238
+    ga_worlddone,63,1254
+    ga_screenshot64,1272
+} gameaction_t;65,1290
+    BT_ATTACK	75,1386
+    BT_USE	77,1459
+    BT_SPECIAL	80,1523
+    BT_SPECIALMASK	81,1546
+    BT_CHANGE	85,1660
+    BT_WEAPONMASK	87,1732
+    BT_WEAPONSHIFT	88,1763
+    BTS_PAUSE	91,1811
+    BTS_SAVEGAME	93,1869
+    BTS_SAVEMASK	97,1968
+    BTS_SAVESHIFT 98,1997
+} buttoncode_t;100,2024
+#define MAXEVENTS	108,2070
+
+d_french.h,5708
+#define __D_FRENCH__24,752
+#define D_DEVSTR	29,792
+#define D_CDROM	30,836
+#define PRESSKEY 35,922
+#define PRESSYN 36,966
+#define QUITMSG	37,1004
+#define LOADNET 38,1067
+#define QLOADNET	39,1144
+#define QSAVESPOT	40,1213
+#define SAVEDEAD 41,1284
+#define QSPROMPT 43,1368
+#define QLPROMPT	44,1443
+#define NEWGAME	46,1520
+#define NIGHTMARE	48,1609
+#define SWSTRING	50,1694
+#define MSGOFF	52,1817
+#define MSGON	53,1848
+#define NETEND	54,1877
+#define ENDGAME	56,1962
+#define DOSY	58,2033
+#define DETAILHI	60,2086
+#define DETAILLO	61,2125
+#define GAMMALVL0	62,2164
+#define GAMMALVL1	63,2205
+#define GAMMALVL2	64,2251
+#define GAMMALVL3	65,2297
+#define GAMMALVL4	66,2343
+#define EMPTYSTRING	67,2389
+#define GOTARMOR	72,2448
+#define GOTMEGA	73,2485
+#define GOTHTHBONUS	74,2527
+#define GOTARMBONUS	75,2574
+#define GOTSTIM	76,2621
+#define GOTMEDINEED	77,2659
+#define GOTMEDIKIT	78,2729
+#define GOTSUPER	79,2768
+#define GOTBLUECARD	81,2801
+#define GOTYELWCARD	82,2857
+#define GOTREDCARD	83,2913
+#define GOTBLUESKUL	84,2968
+#define GOTYELWSKUL	85,3018
+#define GOTREDSKULL	86,3068
+#define GOTINVUL	88,3119
+#define GOTBERSERK	89,3155
+#define GOTINVIS	90,3185
+#define GOTSUIT	91,3228
+#define GOTMAP	92,3276
+#define GOTVISOR	93,3314
+#define GOTMSPHERE	94,3368
+#define GOTCLIP	96,3402
+#define GOTCLIPBOX	97,3440
+#define GOTROCKET	98,3488
+#define GOTROCKBOX	99,3528
+#define GOTCELL	100,3580
+#define GOTCELLBOX	101,3628
+#define GOTSHELLS	102,3686
+#define GOTSHELLBOX	103,3731
+#define GOTBACKPACK	104,3784
+#define GOTBFG9000	106,3840
+#define GOTCHAINGUN	107,3893
+#define GOTCHAINSAW	108,3942
+#define GOTLAUNCHER	109,3982
+#define GOTPLASMA	110,4034
+#define GOTSHOTGUN	111,4083
+#define GOTSHOTGUN2	112,4124
+#define PD_BLUEO	117,4192
+#define PD_REDO	118,4239
+#define PD_YELLOWO	119,4286
+#define PD_BLUEK	120,4335
+#define PD_REDK	121,4361
+#define PD_YELLOWK	122,4386
+#define GGSAVED	127,4435
+#define HUSTR_MSGU	132,4491
+#define HUSTR_E1M1	134,4534
+#define HUSTR_E1M2	135,4568
+#define HUSTR_E1M3	136,4612
+#define HUSTR_E1M4	137,4662
+#define HUSTR_E1M5	138,4709
+#define HUSTR_E1M6	139,4756
+#define HUSTR_E1M7	140,4803
+#define HUSTR_E1M8	141,4851
+#define HUSTR_E1M9	142,4895
+#define HUSTR_E2M1	144,4939
+#define HUSTR_E2M2	145,4983
+#define HUSTR_E2M3	146,5031
+#define HUSTR_E2M4	147,5069
+#define HUSTR_E2M5	148,5116
+#define HUSTR_E2M6	149,5163
+#define HUSTR_E2M7	150,5208
+#define HUSTR_E2M8	151,5258
+#define HUSTR_E2M9	152,5300
+#define HUSTR_E3M1	154,5351
+#define HUSTR_E3M2	155,5397
+#define HUSTR_E3M3	156,5447
+#define HUSTR_E3M4	157,5486
+#define HUSTR_E3M5	158,5535
+#define HUSTR_E3M6	159,5582
+#define HUSTR_E3M7	160,5621
+#define HUSTR_E3M8	161,5655
+#define HUSTR_E3M9	162,5686
+#define HUSTR_1	164,5723
+#define HUSTR_2	165,5760
+#define HUSTR_3	166,5808
+#define HUSTR_4	167,5852
+#define HUSTR_5	168,5891
+#define HUSTR_6	169,5932
+#define HUSTR_7	170,5973
+#define HUSTR_8	171,6021
+#define HUSTR_9	172,6067
+#define HUSTR_10	173,6106
+#define HUSTR_11	174,6160
+#define HUSTR_12	176,6213
+#define HUSTR_13	177,6252
+#define HUSTR_14	178,6298
+#define HUSTR_15	179,6350
+#define HUSTR_16	180,6402
+#define HUSTR_17	181,6444
+#define HUSTR_18	182,6488
+#define HUSTR_19	183,6527
+#define HUSTR_20	184,6571
+#define HUSTR_21	186,6614
+#define HUSTR_22	187,6655
+#define HUSTR_23	188,6701
+#define HUSTR_24	189,6747
+#define HUSTR_25	190,6789
+#define HUSTR_26	191,6838
+#define HUSTR_27	192,6891
+#define HUSTR_28	193,6940
+#define HUSTR_29	194,6992
+#define HUSTR_30	195,7033
+#define HUSTR_31	197,7082
+#define HUSTR_32	198,7124
+#define HUSTR_CHATMACRO1	201,7168
+#define HUSTR_CHATMACRO2	202,7231
+#define HUSTR_CHATMACRO3	203,7272
+#define HUSTR_CHATMACRO4	204,7327
+#define HUSTR_CHATMACRO5	205,7366
+#define HUSTR_CHATMACRO6	206,7404
+#define HUSTR_CHATMACRO7	207,7461
+#define HUSTR_CHATMACRO8	208,7499
+#define HUSTR_CHATMACRO9	209,7548
+#define HUSTR_CHATMACRO0	210,7579
+#define HUSTR_TALKTOSELF1	212,7611
+#define HUSTR_TALKTOSELF2	213,7662
+#define HUSTR_TALKTOSELF3	214,7702
+#define HUSTR_TALKTOSELF4	215,7753
+#define HUSTR_TALKTOSELF5	216,7807
+#define HUSTR_MESSAGESENT	218,7856
+#define HUSTR_PLRGREEN	223,7984
+#define HUSTR_PLRINDIGO	224,8016
+#define HUSTR_PLRBROWN	225,8051
+#define HUSTR_PLRRED	226,8083
+#define HUSTR_KEYGREEN	228,8116
+#define HUSTR_KEYINDIGO	229,8171
+#define HUSTR_KEYBROWN	230,8200
+#define HUSTR_KEYRED	231,8228
+#define AMSTR_FOLLOWON	237,8274
+#define AMSTR_FOLLOWOFF	238,8318
+#define AMSTR_GRIDON	240,8365
+#define AMSTR_GRIDOFF	241,8399
+#define AMSTR_MARKEDSPOT	243,8436
+#define AMSTR_MARKSCLEARED	244,8478
+#define STSTR_MUS	250,8546
+#define STSTR_NOMUS	251,8590
+#define STSTR_DQDON	252,8634
+#define STSTR_DQDOFF	253,8677
+#define STSTR_KFAADDED	255,8722
+#define STSTR_FAADDED	256,8767
+#define STSTR_NCON	258,8821
+#define STSTR_NCOFF	259,8856
+#define STSTR_BEHOLD	261,8894
+#define STSTR_BEHOLDX	262,8965
+#define STSTR_CHOPPERS	264,9012
+#define STSTR_CLEV	265,9060
+#define E1TEXT	270,9127
+#define E2TEXT	286,9673
+#define E3TEXT	304,10227
+#define C1TEXT	326,10878
+#define C2TEXT	341,11416
+#define C3TEXT	361,12203
+#define C4TEXT	373,12600
+#define C5TEXT	391,13248
+#define C6TEXT	399,13495
+#define CC_ZOMBIE	406,13670
+#define CC_SHOTGUN	407,13697
+#define CC_HEAVY	408,13732
+#define CC_IMP	409,13766
+#define CC_DEMON	410,13794
+#define CC_LOST	411,13819
+#define CC_CACO	412,13849
+#define CC_HELL	413,13878
+#define CC_BARON	414,13918
+#define CC_ARACH	415,13954
+#define CC_PAIN	416,13985
+#define CC_REVEN	417,14030
+#define CC_MANCU	418,14058
+#define CC_ARCH	419,14086
+#define CC_SPIDER	420,14118
+#define CC_CYBER	421,14157
+#define CC_HERO	422,14190
+
+d_items.h,214
+#define __D_ITEMS__24,763
+    ammotype_t	ammo;36,913
+    int		upstate;37,934
+    int		downstate;38,952
+    int		readystate;39,972
+    int		atkstate;40,993
+    int		flashstate;41,1012
+} weaponinfo_t;43,1034
+
+d_main.h,54
+#define __D_MAIN__26,759
+#define MAXWADFILES 36,845
+
+d_net.h,925
+#define __D_NET__24,730
+#define DOOMCOM_ID	42,1008
+#define MAXNETNODES	45,1077
+#define BACKUPTICS	49,1143
+    CMD_SEND	53,1182
+    CMD_GET	54,1200
+} command_t;56,1217
+    unsigned		checksum;65,1318
+    byte		retransmitfrom;67,1380
+    byte		starttic;69,1411
+    byte		player;70,1431
+    byte		numtics;71,1449
+    ticcmd_t		cmds[cmds72,1468
+} doomdata_t;74,1501
+    long		id;82,1570
+    short		intnum;85,1638
+    short		command;88,1740
+    short		remotenode;90,1814
+    short		datalength;93,1888
+    short		numnodes;97,1979
+    short		ticdup;99,2058
+    short		extratics;101,2129
+    short		deathmatch;103,2180
+    short		savegame;105,2251
+    short		episode;106,2272
+    short		map;107,2299
+    short		skill;108,2323
+    short		consoleplayer;111,2385
+    short		numplayers;112,2411
+    short		angleoffset;120,2705
+    short		drone;122,2746
+    doomdata_t		data;125,2802
+} doomcom_t;127,2829
+
+doomdata.h,1870
+#define __DOOMDATA__25,879
+  ML_LABEL,45,1291
+  ML_THINGS,46,1340
+  ML_LINEDEFS,47,1375
+  ML_SIDEDEFS,48,1417
+  ML_VERTEXES,49,1459
+  ML_SEGS,50,1520
+  ML_SSECTORS,51,1572
+  ML_NODES,52,1620
+  ML_SECTORS,53,1646
+  ML_REJECT,54,1686
+  ML_BLOCKMAP	55,1734
+  short		x;62,1835
+  short		y;63,1847
+} mapvertex_t;64,1859
+  short		textureoffset;71,1985
+  short		rowoffset;72,2009
+  char		toptexture[toptexture73,2029
+  char		bottomtexture[bottomtexture74,2052
+  char		midtexture[midtexture75,2078
+  short		sector;77,2136
+} mapsidedef_t;78,2153
+  short		v1;86,2260
+  short		v2;87,2273
+  short		flags;88,2286
+  short		special;89,2302
+  short		tag;90,2320
+  short		sidenum[sidenum92,2374
+} maplinedef_t;93,2397
+#define ML_BLOCKING	101,2471
+#define ML_BLOCKMONSTERS	104,2520
+#define ML_TWOSIDED	108,2609
+#define ML_DONTPEGTOP	120,3046
+#define ML_DONTPEGBOTTOM	123,3098
+#define ML_SECRET	126,3182
+#define ML_SOUNDBLOCK	129,3261
+#define ML_DONTDRAW	132,3325
+#define ML_MAPPED	135,3398
+  short		floorheight;143,3478
+  short		ceilingheight;144,3500
+  char		floorpic[floorpic145,3524
+  char		ceilingpic[ceilingpic146,3545
+  short		lightlevel;147,3568
+  short		special;148,3589
+  short		tag;149,3607
+} mapsector_t;150,3621
+  short		numsegs;155,3689
+  short		firstseg;157,3762
+} mapsubsector_t;158,3782
+  short		v1;165,3913
+  short		v2;166,3926
+  short		angle;167,3939
+  short		linedef;168,3957
+  short		side;169,3975
+  short		offset;170,3990
+} mapseg_t;171,4007
+#define	NF_SUBSECTOR	178,4066
+  short		x;183,4157
+  short		y;184,4169
+  short		dx;185,4181
+  short		dy;186,4194
+  short		bbox[bbox190,4274
+  unsigned short	children[children194,4376
+} mapnode_t;196,4407
+    short		x;205,4541
+    short		y;206,4555
+    short		angle;207,4569
+    short		type;208,4587
+    short		options;209,4604
+} mapthing_t;210,4624
+
+doomdef.h,2944
+#define __DOOMDEF__24,815
+enum { VERSION 33,928
+  shareware,40,1061
+  registered,41,1102
+  commercial,42,1146
+  retail,44,1224
+  indetermined	45,1260
+} GameMode_t;47,1302
+  doom,53,1382
+  doom2,54,1401
+  pack_tnt,55,1420
+  pack_plut,56,1452
+  none57,1482
+} GameMission_t;59,1490
+  english,65,1576
+  french,66,1587
+  german,67,1597
+  unknown68,1607
+} Language_t;70,1618
+#define RANGECHECK75,1730
+#define SNDSERV 84,2039
+#define	BASE_WIDTH	98,2348
+#define	SCREEN_MUL	104,2532
+#define	INV_ASPECT_RATIO	105,2554
+#define SCREENWIDTH 110,2697
+#define SCREENHEIGHT 112,2752
+#define MAXPLAYERS	119,2893
+#define TICRATE	122,2959
+    GS_LEVEL,129,3132
+    GS_INTERMISSION,130,3146
+    GS_FINALE,131,3167
+    GS_DEMOSCREEN132,3182
+} gamestate_t;133,3200
+#define	MTF_EASY	140,3277
+#define	MTF_NORMAL	141,3297
+#define	MTF_HARD	142,3319
+#define	MTF_AMBUSH	145,3380
+    sk_baby,149,3418
+    sk_easy,150,3431
+    sk_medium,151,3444
+    sk_hard,152,3459
+    sk_nightmare153,3472
+} skill_t;154,3489
+    it_bluecard,164,3539
+    it_yellowcard,165,3556
+    it_redcard,166,3575
+    it_blueskull,167,3591
+    it_yellowskull,168,3609
+    it_redskull,169,3629
+    NUMCARDS171,3651
+} card_t;173,3669
+    wp_fist,182,3788
+    wp_pistol,183,3801
+    wp_shotgun,184,3816
+    wp_chaingun,185,3832
+    wp_missile,186,3849
+    wp_plasma,187,3865
+    wp_bfg,188,3880
+    wp_chainsaw,189,3892
+    wp_supershotgun,190,3909
+    NUMWEAPONS,192,3931
+    wp_nochange195,3985
+} weapontype_t;197,4002
+    am_clip,203,4064
+    am_shell,204,4104
+    am_cell,205,4156
+    am_misl,206,4191
+    NUMAMMO,207,4225
+    am_noammo	208,4238
+} ammotype_t;210,4288
+    pw_invulnerability,216,4342
+    pw_strength,217,4366
+    pw_invisibility,218,4383
+    pw_ironfeet,219,4404
+    pw_allmap,220,4421
+    pw_infrared,221,4436
+    NUMPOWERS222,4453
+} powertype_t;224,4472
+    INVULNTICS	235,4613
+    INVULNTICS	= (30*TICRATE)TICRATE235,4613
+    INVISTICS	236,4644
+    INVISTICS	= (60*TICRATE)TICRATE236,4644
+    INFRATICS	237,4674
+    INFRATICS	= (120*TICRATE)TICRATE237,4674
+    IRONTICS	238,4705
+    IRONTICS	= (60*TICRATE)TICRATE238,4705
+} powerduration_t;240,4738
+#define KEY_RIGHTARROW	250,4890
+#define KEY_LEFTARROW	251,4918
+#define KEY_UPARROW	252,4945
+#define KEY_DOWNARROW	253,4970
+#define KEY_ESCAPE	254,4997
+#define KEY_ENTER	255,5019
+#define KEY_TAB	256,5040
+#define KEY_F1	257,5059
+#define KEY_F2	258,5087
+#define KEY_F3	259,5115
+#define KEY_F4	260,5143
+#define KEY_F5	261,5171
+#define KEY_F6	262,5199
+#define KEY_F7	263,5227
+#define KEY_F8	264,5255
+#define KEY_F9	265,5283
+#define KEY_F10	266,5311
+#define KEY_F11	267,5340
+#define KEY_F12	268,5369
+#define KEY_BACKSPACE	270,5399
+#define KEY_PAUSE	271,5425
+#define KEY_EQUALS	273,5449
+#define KEY_MINUS	274,5473
+#define KEY_RSHIFT	276,5497
+#define KEY_RCTRL	277,5528
+#define KEY_RALT	278,5558
+#define KEY_LALT	280,5588
+
+doomstat.h,60
+#define __D_STATE__29,1019
+#define MAX_DM_STARTS 219,5232
+
+doomtype.h,436
+#define __DOOMTYPE__25,798
+#define __BYTEBOOL__29,842
+typedef bool boolean;32,926
+typedef enum {false,false34,954
+typedef enum {false, true}true34,954
+typedef enum {false, true} boolean;34,954
+typedef unsigned char byte;36,997
+#define MAXCHAR	44,1101
+#define MAXSHORT	45,1131
+#define MAXINT	48,1188
+#define MAXLONG	49,1223
+#define MINCHAR	50,1259
+#define MINSHORT	51,1289
+#define MININT	54,1355
+#define MINLONG	55,1390
+
+d_player.h,1963
+#define __D_PLAYER__24,715
+    PST_LIVE,56,1336
+    PST_DEAD,58,1398
+    PST_REBORN	60,1447
+} playerstate_t;62,1465
+    CF_NOCLIP	71,1596
+    CF_GODMODE	73,1650
+    CF_NOMOMENTUM	75,1716
+} cheat_t;77,1739
+typedef struct player_s83,1799
+    mobj_t*		mo;85,1825
+    playerstate_t	playerstate;86,1842
+    ticcmd_t		cmd;87,1873
+    fixed_t		viewz;92,1998
+    fixed_t		viewheight;94,2060
+    fixed_t         	deltaviewheight;96,2109
+    fixed_t         	bob;98,2185
+    int			health;102,2295
+    int			armorpoints;103,2314
+    int			armortype;105,2363
+    int			powers[powers108,2439
+    boolean		cards[cards109,2468
+    boolean		backpack;110,2498
+    int			frags[frags113,2564
+    weapontype_t	readyweapon;114,2593
+    weapontype_t	pendingweapon;117,2667
+    boolean		weaponowned[weaponowned119,2700
+    int			ammo[ammo120,2738
+    int			maxammo[maxammo121,2763
+    int			attackdown;124,2829
+    int			usedown;125,2851
+    int			cheats;129,2938
+    int			refire;132,2999
+    int			killcount;135,3052
+    int			itemcount;136,3073
+    int			secretcount;137,3094
+    char*		message;140,3140
+    int			damagecount;143,3210
+    int			bonuscount;144,3233
+    mobj_t*		attacker;147,3306
+    int			extralight;150,3372
+    int			fixedcolormap;154,3472
+    int			colormap;158,3573
+    pspdef_t		psprites[psprites161,3635
+    boolean		didsecret;164,3716
+} player_t;166,3742
+    boolean	in;175,3836
+    int		skills;178,3939
+    int		sitems;179,3956
+    int		ssecret;180,3973
+    int		stime;181,3991
+    int		frags[frags182,4008
+    int		score;183,4027
+} wbplayerstruct_t;185,4092
+    int		epsd;189,4130
+    boolean	didsecret;192,4205
+    int		last;195,4275
+    int		next;196,4290
+    int		maxkills;198,4311
+    int		maxitems;199,4330
+    int		maxsecret;200,4349
+    int		maxfrags;201,4369
+    int		partime;204,4409
+    int		pnum;207,4468
+    wbplayerstruct_t	plyr[plyr209,4485
+} wbstartstruct_t;211,4525
+
+dstrings.h,141
+#define __DSTRINGS__27,758
+#define SAVEGAMENAME	41,974
+#define DEVMAPS 49,1098
+#define DEVDATA 50,1124
+#define NUM_QUITMESSAGES 56,1197
+
+d_textur.h,116
+#define __D_TEXTUR__25,813
+    byte		width;38,934
+    byte		height;39,951
+    byte		data;40,969
+} pic_t;41,985
+
+d_think.h,459
+#define __D_THINK__26,890
+typedef  void (*actionf_v)actionf_v41,1098
+typedef  void (*actionf_p1)actionf_p142,1128
+typedef  void (*actionf_p2)actionf_p243,1166
+  actionf_p1	acp1;47,1228
+  actionf_v	acv;48,1247
+  actionf_p2	acp2;49,1264
+} actionf_t;51,1284
+typedef actionf_t  think_t;60,1402
+typedef struct thinker_s64,1465
+    struct thinker_s*	prev;66,1492
+    struct thinker_s*	next;67,1520
+    think_t		function;68,1548
+} thinker_t;70,1576
+
+d_ticcmd.h,218
+#define __D_TICCMD__24,748
+    char	forwardmove;38,1048
+    char	sidemove;39,1088
+    short	angleturn;40,1125
+    short	consistancy;41,1170
+    byte	chatchar;42,1216
+    byte	buttons;43,1235
+} ticcmd_t;44,1253
+
+f_finale.h,28
+#define __F_FINALE__24,719
+
+f_wipe.h,103
+#define __F_WIPE_H__24,765
+    wipe_ColorXForm,33,896
+    wipe_Melt,36,947
+    wipe_NUMWIPES38,964
+
+g_game.h,26
+#define __G_GAME__24,721
+
+hu_lib.h,617
+#define __HULIB__22,714
+#define BG	30,864
+#define FG	31,879
+#define HU_CHARERASE	34,909
+#define HU_MAXLINES	36,945
+#define HU_MAXLINELENGTH	37,968
+    int		x;48,1174
+    int		y;49,1186
+    patch_t**	f;51,1203
+    int		sc;52,1230
+    char	l[l53,1264
+    int		len;54,1312
+    int		needsupdate;57,1403
+} hu_textline_t;59,1433
+    hu_textline_t	l[l67,1534
+    int			h;68,1590
+    int			cl;69,1623
+    boolean*		on;72,1721
+    boolean		laston;73,1739
+} hu_stext_t;75,1786
+    hu_textline_t	l;83,1878
+    int			lm;86,1987
+    boolean*		on;89,2061
+    boolean		laston;90,2080
+} hu_itext_t;92,2126
+
+hu_stuff.h,315
+#define __HU_STUFF_H__22,730
+#define HU_FONTSTART	30,814
+#define HU_FONTEND	31,868
+#define HU_FONTSIZE	34,954
+#define HU_BROADCAST	36,1008
+#define HU_MSGREFRESH	38,1032
+#define HU_MSGX	39,1064
+#define HU_MSGY	40,1083
+#define HU_MSGWIDTH	41,1102
+#define HU_MSGHEIGHT	42,1142
+#define HU_MSGTIMEOUT	44,1178
+
+i_net.h,25
+#define __I_NET__24,753
+
+info.h,33169
+#define __INFO__25,821
+    SPR_TROO,32,924
+    SPR_SHTG,33,938
+    SPR_PUNG,34,952
+    SPR_PISG,35,966
+    SPR_PISF,36,980
+    SPR_SHTF,37,994
+    SPR_SHT2,38,1008
+    SPR_CHGG,39,1022
+    SPR_CHGF,40,1036
+    SPR_MISG,41,1050
+    SPR_MISF,42,1064
+    SPR_SAWG,43,1078
+    SPR_PLSG,44,1092
+    SPR_PLSF,45,1106
+    SPR_BFGG,46,1120
+    SPR_BFGF,47,1134
+    SPR_BLUD,48,1148
+    SPR_PUFF,49,1162
+    SPR_BAL1,50,1176
+    SPR_BAL2,51,1190
+    SPR_PLSS,52,1204
+    SPR_PLSE,53,1218
+    SPR_MISL,54,1232
+    SPR_BFS1,55,1246
+    SPR_BFE1,56,1260
+    SPR_BFE2,57,1274
+    SPR_TFOG,58,1288
+    SPR_IFOG,59,1302
+    SPR_PLAY,60,1316
+    SPR_POSS,61,1330
+    SPR_SPOS,62,1344
+    SPR_VILE,63,1358
+    SPR_FIRE,64,1372
+    SPR_FATB,65,1386
+    SPR_FBXP,66,1400
+    SPR_SKEL,67,1414
+    SPR_MANF,68,1428
+    SPR_FATT,69,1442
+    SPR_CPOS,70,1456
+    SPR_SARG,71,1470
+    SPR_HEAD,72,1484
+    SPR_BAL7,73,1498
+    SPR_BOSS,74,1512
+    SPR_BOS2,75,1526
+    SPR_SKUL,76,1540
+    SPR_SPID,77,1554
+    SPR_BSPI,78,1568
+    SPR_APLS,79,1582
+    SPR_APBX,80,1596
+    SPR_CYBR,81,1610
+    SPR_PAIN,82,1624
+    SPR_SSWV,83,1638
+    SPR_KEEN,84,1652
+    SPR_BBRN,85,1666
+    SPR_BOSF,86,1680
+    SPR_ARM1,87,1694
+    SPR_ARM2,88,1708
+    SPR_BAR1,89,1722
+    SPR_BEXP,90,1736
+    SPR_FCAN,91,1750
+    SPR_BON1,92,1764
+    SPR_BON2,93,1778
+    SPR_BKEY,94,1792
+    SPR_RKEY,95,1806
+    SPR_YKEY,96,1820
+    SPR_BSKU,97,1834
+    SPR_RSKU,98,1848
+    SPR_YSKU,99,1862
+    SPR_STIM,100,1876
+    SPR_MEDI,101,1890
+    SPR_SOUL,102,1904
+    SPR_PINV,103,1918
+    SPR_PSTR,104,1932
+    SPR_PINS,105,1946
+    SPR_MEGA,106,1960
+    SPR_SUIT,107,1974
+    SPR_PMAP,108,1988
+    SPR_PVIS,109,2002
+    SPR_CLIP,110,2016
+    SPR_AMMO,111,2030
+    SPR_ROCK,112,2044
+    SPR_BROK,113,2058
+    SPR_CELL,114,2072
+    SPR_CELP,115,2086
+    SPR_SHEL,116,2100
+    SPR_SBOX,117,2114
+    SPR_BPAK,118,2128
+    SPR_BFUG,119,2142
+    SPR_MGUN,120,2156
+    SPR_CSAW,121,2170
+    SPR_LAUN,122,2184
+    SPR_PLAS,123,2198
+    SPR_SHOT,124,2212
+    SPR_SGN2,125,2226
+    SPR_COLU,126,2240
+    SPR_SMT2,127,2254
+    SPR_GOR1,128,2268
+    SPR_POL2,129,2282
+    SPR_POL5,130,2296
+    SPR_POL4,131,2310
+    SPR_POL3,132,2324
+    SPR_POL1,133,2338
+    SPR_POL6,134,2352
+    SPR_GOR2,135,2366
+    SPR_GOR3,136,2380
+    SPR_GOR4,137,2394
+    SPR_GOR5,138,2408
+    SPR_SMIT,139,2422
+    SPR_COL1,140,2436
+    SPR_COL2,141,2450
+    SPR_COL3,142,2464
+    SPR_COL4,143,2478
+    SPR_CAND,144,2492
+    SPR_CBRA,145,2506
+    SPR_COL6,146,2520
+    SPR_TRE1,147,2534
+    SPR_TRE2,148,2548
+    SPR_ELEC,149,2562
+    SPR_CEYE,150,2576
+    SPR_FSKU,151,2590
+    SPR_COL5,152,2604
+    SPR_TBLU,153,2618
+    SPR_TGRN,154,2632
+    SPR_TRED,155,2646
+    SPR_SMBT,156,2660
+    SPR_SMGT,157,2674
+    SPR_SMRT,158,2688
+    SPR_HDB1,159,2702
+    SPR_HDB2,160,2716
+    SPR_HDB3,161,2730
+    SPR_HDB4,162,2744
+    SPR_HDB5,163,2758
+    SPR_HDB6,164,2772
+    SPR_POB1,165,2786
+    SPR_POB2,166,2800
+    SPR_BRS1,167,2814
+    SPR_TLMP,168,2828
+    SPR_TLP2,169,2842
+    NUMSPRITES170,2856
+} spritenum_t;172,2872
+    S_NULL,176,2903
+    S_LIGHTDONE,177,2915
+    S_PUNCH,178,2932
+    S_PUNCHDOWN,179,2945
+    S_PUNCHUP,180,2962
+    S_PUNCH1,181,2977
+    S_PUNCH2,182,2991
+    S_PUNCH3,183,3005
+    S_PUNCH4,184,3019
+    S_PUNCH5,185,3033
+    S_PISTOL,186,3047
+    S_PISTOLDOWN,187,3061
+    S_PISTOLUP,188,3079
+    S_PISTOL1,189,3095
+    S_PISTOL2,190,3110
+    S_PISTOL3,191,3125
+    S_PISTOL4,192,3140
+    S_PISTOLFLASH,193,3155
+    S_SGUN,194,3174
+    S_SGUNDOWN,195,3186
+    S_SGUNUP,196,3202
+    S_SGUN1,197,3216
+    S_SGUN2,198,3229
+    S_SGUN3,199,3242
+    S_SGUN4,200,3255
+    S_SGUN5,201,3268
+    S_SGUN6,202,3281
+    S_SGUN7,203,3294
+    S_SGUN8,204,3307
+    S_SGUN9,205,3320
+    S_SGUNFLASH1,206,3333
+    S_SGUNFLASH2,207,3351
+    S_DSGUN,208,3369
+    S_DSGUNDOWN,209,3382
+    S_DSGUNUP,210,3399
+    S_DSGUN1,211,3414
+    S_DSGUN2,212,3428
+    S_DSGUN3,213,3442
+    S_DSGUN4,214,3456
+    S_DSGUN5,215,3470
+    S_DSGUN6,216,3484
+    S_DSGUN7,217,3498
+    S_DSGUN8,218,3512
+    S_DSGUN9,219,3526
+    S_DSGUN10,220,3540
+    S_DSNR1,221,3555
+    S_DSNR2,222,3568
+    S_DSGUNFLASH1,223,3581
+    S_DSGUNFLASH2,224,3600
+    S_CHAIN,225,3619
+    S_CHAINDOWN,226,3632
+    S_CHAINUP,227,3649
+    S_CHAIN1,228,3664
+    S_CHAIN2,229,3678
+    S_CHAIN3,230,3692
+    S_CHAINFLASH1,231,3706
+    S_CHAINFLASH2,232,3725
+    S_MISSILE,233,3744
+    S_MISSILEDOWN,234,3759
+    S_MISSILEUP,235,3778
+    S_MISSILE1,236,3795
+    S_MISSILE2,237,3811
+    S_MISSILE3,238,3827
+    S_MISSILEFLASH1,239,3843
+    S_MISSILEFLASH2,240,3864
+    S_MISSILEFLASH3,241,3885
+    S_MISSILEFLASH4,242,3906
+    S_SAW,243,3927
+    S_SAWB,244,3938
+    S_SAWDOWN,245,3950
+    S_SAWUP,246,3965
+    S_SAW1,247,3978
+    S_SAW2,248,3990
+    S_SAW3,249,4002
+    S_PLASMA,250,4014
+    S_PLASMADOWN,251,4028
+    S_PLASMAUP,252,4046
+    S_PLASMA1,253,4062
+    S_PLASMA2,254,4077
+    S_PLASMAFLASH1,255,4092
+    S_PLASMAFLASH2,256,4112
+    S_BFG,257,4132
+    S_BFGDOWN,258,4143
+    S_BFGUP,259,4158
+    S_BFG1,260,4171
+    S_BFG2,261,4183
+    S_BFG3,262,4195
+    S_BFG4,263,4207
+    S_BFGFLASH1,264,4219
+    S_BFGFLASH2,265,4236
+    S_BLOOD1,266,4253
+    S_BLOOD2,267,4267
+    S_BLOOD3,268,4281
+    S_PUFF1,269,4295
+    S_PUFF2,270,4308
+    S_PUFF3,271,4321
+    S_PUFF4,272,4334
+    S_TBALL1,273,4347
+    S_TBALL2,274,4361
+    S_TBALLX1,275,4375
+    S_TBALLX2,276,4390
+    S_TBALLX3,277,4405
+    S_RBALL1,278,4420
+    S_RBALL2,279,4434
+    S_RBALLX1,280,4448
+    S_RBALLX2,281,4463
+    S_RBALLX3,282,4478
+    S_PLASBALL,283,4493
+    S_PLASBALL2,284,4509
+    S_PLASEXP,285,4526
+    S_PLASEXP2,286,4541
+    S_PLASEXP3,287,4557
+    S_PLASEXP4,288,4573
+    S_PLASEXP5,289,4589
+    S_ROCKET,290,4605
+    S_BFGSHOT,291,4619
+    S_BFGSHOT2,292,4634
+    S_BFGLAND,293,4650
+    S_BFGLAND2,294,4665
+    S_BFGLAND3,295,4681
+    S_BFGLAND4,296,4697
+    S_BFGLAND5,297,4713
+    S_BFGLAND6,298,4729
+    S_BFGEXP,299,4745
+    S_BFGEXP2,300,4759
+    S_BFGEXP3,301,4774
+    S_BFGEXP4,302,4789
+    S_EXPLODE1,303,4804
+    S_EXPLODE2,304,4820
+    S_EXPLODE3,305,4836
+    S_TFOG,306,4852
+    S_TFOG01,307,4864
+    S_TFOG02,308,4878
+    S_TFOG2,309,4892
+    S_TFOG3,310,4905
+    S_TFOG4,311,4918
+    S_TFOG5,312,4931
+    S_TFOG6,313,4944
+    S_TFOG7,314,4957
+    S_TFOG8,315,4970
+    S_TFOG9,316,4983
+    S_TFOG10,317,4996
+    S_IFOG,318,5010
+    S_IFOG01,319,5022
+    S_IFOG02,320,5036
+    S_IFOG2,321,5050
+    S_IFOG3,322,5063
+    S_IFOG4,323,5076
+    S_IFOG5,324,5089
+    S_PLAY,325,5102
+    S_PLAY_RUN1,326,5114
+    S_PLAY_RUN2,327,5131
+    S_PLAY_RUN3,328,5148
+    S_PLAY_RUN4,329,5165
+    S_PLAY_ATK1,330,5182
+    S_PLAY_ATK2,331,5199
+    S_PLAY_PAIN,332,5216
+    S_PLAY_PAIN2,333,5233
+    S_PLAY_DIE1,334,5251
+    S_PLAY_DIE2,335,5268
+    S_PLAY_DIE3,336,5285
+    S_PLAY_DIE4,337,5302
+    S_PLAY_DIE5,338,5319
+    S_PLAY_DIE6,339,5336
+    S_PLAY_DIE7,340,5353
+    S_PLAY_XDIE1,341,5370
+    S_PLAY_XDIE2,342,5388
+    S_PLAY_XDIE3,343,5406
+    S_PLAY_XDIE4,344,5424
+    S_PLAY_XDIE5,345,5442
+    S_PLAY_XDIE6,346,5460
+    S_PLAY_XDIE7,347,5478
+    S_PLAY_XDIE8,348,5496
+    S_PLAY_XDIE9,349,5514
+    S_POSS_STND,350,5532
+    S_POSS_STND2,351,5549
+    S_POSS_RUN1,352,5567
+    S_POSS_RUN2,353,5584
+    S_POSS_RUN3,354,5601
+    S_POSS_RUN4,355,5618
+    S_POSS_RUN5,356,5635
+    S_POSS_RUN6,357,5652
+    S_POSS_RUN7,358,5669
+    S_POSS_RUN8,359,5686
+    S_POSS_ATK1,360,5703
+    S_POSS_ATK2,361,5720
+    S_POSS_ATK3,362,5737
+    S_POSS_PAIN,363,5754
+    S_POSS_PAIN2,364,5771
+    S_POSS_DIE1,365,5789
+    S_POSS_DIE2,366,5806
+    S_POSS_DIE3,367,5823
+    S_POSS_DIE4,368,5840
+    S_POSS_DIE5,369,5857
+    S_POSS_XDIE1,370,5874
+    S_POSS_XDIE2,371,5892
+    S_POSS_XDIE3,372,5910
+    S_POSS_XDIE4,373,5928
+    S_POSS_XDIE5,374,5946
+    S_POSS_XDIE6,375,5964
+    S_POSS_XDIE7,376,5982
+    S_POSS_XDIE8,377,6000
+    S_POSS_XDIE9,378,6018
+    S_POSS_RAISE1,379,6036
+    S_POSS_RAISE2,380,6055
+    S_POSS_RAISE3,381,6074
+    S_POSS_RAISE4,382,6093
+    S_SPOS_STND,383,6112
+    S_SPOS_STND2,384,6129
+    S_SPOS_RUN1,385,6147
+    S_SPOS_RUN2,386,6164
+    S_SPOS_RUN3,387,6181
+    S_SPOS_RUN4,388,6198
+    S_SPOS_RUN5,389,6215
+    S_SPOS_RUN6,390,6232
+    S_SPOS_RUN7,391,6249
+    S_SPOS_RUN8,392,6266
+    S_SPOS_ATK1,393,6283
+    S_SPOS_ATK2,394,6300
+    S_SPOS_ATK3,395,6317
+    S_SPOS_PAIN,396,6334
+    S_SPOS_PAIN2,397,6351
+    S_SPOS_DIE1,398,6369
+    S_SPOS_DIE2,399,6386
+    S_SPOS_DIE3,400,6403
+    S_SPOS_DIE4,401,6420
+    S_SPOS_DIE5,402,6437
+    S_SPOS_XDIE1,403,6454
+    S_SPOS_XDIE2,404,6472
+    S_SPOS_XDIE3,405,6490
+    S_SPOS_XDIE4,406,6508
+    S_SPOS_XDIE5,407,6526
+    S_SPOS_XDIE6,408,6544
+    S_SPOS_XDIE7,409,6562
+    S_SPOS_XDIE8,410,6580
+    S_SPOS_XDIE9,411,6598
+    S_SPOS_RAISE1,412,6616
+    S_SPOS_RAISE2,413,6635
+    S_SPOS_RAISE3,414,6654
+    S_SPOS_RAISE4,415,6673
+    S_SPOS_RAISE5,416,6692
+    S_VILE_STND,417,6711
+    S_VILE_STND2,418,6728
+    S_VILE_RUN1,419,6746
+    S_VILE_RUN2,420,6763
+    S_VILE_RUN3,421,6780
+    S_VILE_RUN4,422,6797
+    S_VILE_RUN5,423,6814
+    S_VILE_RUN6,424,6831
+    S_VILE_RUN7,425,6848
+    S_VILE_RUN8,426,6865
+    S_VILE_RUN9,427,6882
+    S_VILE_RUN10,428,6899
+    S_VILE_RUN11,429,6917
+    S_VILE_RUN12,430,6935
+    S_VILE_ATK1,431,6953
+    S_VILE_ATK2,432,6970
+    S_VILE_ATK3,433,6987
+    S_VILE_ATK4,434,7004
+    S_VILE_ATK5,435,7021
+    S_VILE_ATK6,436,7038
+    S_VILE_ATK7,437,7055
+    S_VILE_ATK8,438,7072
+    S_VILE_ATK9,439,7089
+    S_VILE_ATK10,440,7106
+    S_VILE_ATK11,441,7124
+    S_VILE_HEAL1,442,7142
+    S_VILE_HEAL2,443,7160
+    S_VILE_HEAL3,444,7178
+    S_VILE_PAIN,445,7196
+    S_VILE_PAIN2,446,7213
+    S_VILE_DIE1,447,7231
+    S_VILE_DIE2,448,7248
+    S_VILE_DIE3,449,7265
+    S_VILE_DIE4,450,7282
+    S_VILE_DIE5,451,7299
+    S_VILE_DIE6,452,7316
+    S_VILE_DIE7,453,7333
+    S_VILE_DIE8,454,7350
+    S_VILE_DIE9,455,7367
+    S_VILE_DIE10,456,7384
+    S_FIRE1,457,7402
+    S_FIRE2,458,7415
+    S_FIRE3,459,7428
+    S_FIRE4,460,7441
+    S_FIRE5,461,7454
+    S_FIRE6,462,7467
+    S_FIRE7,463,7480
+    S_FIRE8,464,7493
+    S_FIRE9,465,7506
+    S_FIRE10,466,7519
+    S_FIRE11,467,7533
+    S_FIRE12,468,7547
+    S_FIRE13,469,7561
+    S_FIRE14,470,7575
+    S_FIRE15,471,7589
+    S_FIRE16,472,7603
+    S_FIRE17,473,7617
+    S_FIRE18,474,7631
+    S_FIRE19,475,7645
+    S_FIRE20,476,7659
+    S_FIRE21,477,7673
+    S_FIRE22,478,7687
+    S_FIRE23,479,7701
+    S_FIRE24,480,7715
+    S_FIRE25,481,7729
+    S_FIRE26,482,7743
+    S_FIRE27,483,7757
+    S_FIRE28,484,7771
+    S_FIRE29,485,7785
+    S_FIRE30,486,7799
+    S_SMOKE1,487,7813
+    S_SMOKE2,488,7827
+    S_SMOKE3,489,7841
+    S_SMOKE4,490,7855
+    S_SMOKE5,491,7869
+    S_TRACER,492,7883
+    S_TRACER2,493,7897
+    S_TRACEEXP1,494,7912
+    S_TRACEEXP2,495,7929
+    S_TRACEEXP3,496,7946
+    S_SKEL_STND,497,7963
+    S_SKEL_STND2,498,7980
+    S_SKEL_RUN1,499,7998
+    S_SKEL_RUN2,500,8015
+    S_SKEL_RUN3,501,8032
+    S_SKEL_RUN4,502,8049
+    S_SKEL_RUN5,503,8066
+    S_SKEL_RUN6,504,8083
+    S_SKEL_RUN7,505,8100
+    S_SKEL_RUN8,506,8117
+    S_SKEL_RUN9,507,8134
+    S_SKEL_RUN10,508,8151
+    S_SKEL_RUN11,509,8169
+    S_SKEL_RUN12,510,8187
+    S_SKEL_FIST1,511,8205
+    S_SKEL_FIST2,512,8223
+    S_SKEL_FIST3,513,8241
+    S_SKEL_FIST4,514,8259
+    S_SKEL_MISS1,515,8277
+    S_SKEL_MISS2,516,8295
+    S_SKEL_MISS3,517,8313
+    S_SKEL_MISS4,518,8331
+    S_SKEL_PAIN,519,8349
+    S_SKEL_PAIN2,520,8366
+    S_SKEL_DIE1,521,8384
+    S_SKEL_DIE2,522,8401
+    S_SKEL_DIE3,523,8418
+    S_SKEL_DIE4,524,8435
+    S_SKEL_DIE5,525,8452
+    S_SKEL_DIE6,526,8469
+    S_SKEL_RAISE1,527,8486
+    S_SKEL_RAISE2,528,8505
+    S_SKEL_RAISE3,529,8524
+    S_SKEL_RAISE4,530,8543
+    S_SKEL_RAISE5,531,8562
+    S_SKEL_RAISE6,532,8581
+    S_FATSHOT1,533,8600
+    S_FATSHOT2,534,8616
+    S_FATSHOTX1,535,8632
+    S_FATSHOTX2,536,8649
+    S_FATSHOTX3,537,8666
+    S_FATT_STND,538,8683
+    S_FATT_STND2,539,8700
+    S_FATT_RUN1,540,8718
+    S_FATT_RUN2,541,8735
+    S_FATT_RUN3,542,8752
+    S_FATT_RUN4,543,8769
+    S_FATT_RUN5,544,8786
+    S_FATT_RUN6,545,8803
+    S_FATT_RUN7,546,8820
+    S_FATT_RUN8,547,8837
+    S_FATT_RUN9,548,8854
+    S_FATT_RUN10,549,8871
+    S_FATT_RUN11,550,8889
+    S_FATT_RUN12,551,8907
+    S_FATT_ATK1,552,8925
+    S_FATT_ATK2,553,8942
+    S_FATT_ATK3,554,8959
+    S_FATT_ATK4,555,8976
+    S_FATT_ATK5,556,8993
+    S_FATT_ATK6,557,9010
+    S_FATT_ATK7,558,9027
+    S_FATT_ATK8,559,9044
+    S_FATT_ATK9,560,9061
+    S_FATT_ATK10,561,9078
+    S_FATT_PAIN,562,9096
+    S_FATT_PAIN2,563,9113
+    S_FATT_DIE1,564,9131
+    S_FATT_DIE2,565,9148
+    S_FATT_DIE3,566,9165
+    S_FATT_DIE4,567,9182
+    S_FATT_DIE5,568,9199
+    S_FATT_DIE6,569,9216
+    S_FATT_DIE7,570,9233
+    S_FATT_DIE8,571,9250
+    S_FATT_DIE9,572,9267
+    S_FATT_DIE10,573,9284
+    S_FATT_RAISE1,574,9302
+    S_FATT_RAISE2,575,9321
+    S_FATT_RAISE3,576,9340
+    S_FATT_RAISE4,577,9359
+    S_FATT_RAISE5,578,9378
+    S_FATT_RAISE6,579,9397
+    S_FATT_RAISE7,580,9416
+    S_FATT_RAISE8,581,9435
+    S_CPOS_STND,582,9454
+    S_CPOS_STND2,583,9471
+    S_CPOS_RUN1,584,9489
+    S_CPOS_RUN2,585,9506
+    S_CPOS_RUN3,586,9523
+    S_CPOS_RUN4,587,9540
+    S_CPOS_RUN5,588,9557
+    S_CPOS_RUN6,589,9574
+    S_CPOS_RUN7,590,9591
+    S_CPOS_RUN8,591,9608
+    S_CPOS_ATK1,592,9625
+    S_CPOS_ATK2,593,9642
+    S_CPOS_ATK3,594,9659
+    S_CPOS_ATK4,595,9676
+    S_CPOS_PAIN,596,9693
+    S_CPOS_PAIN2,597,9710
+    S_CPOS_DIE1,598,9728
+    S_CPOS_DIE2,599,9745
+    S_CPOS_DIE3,600,9762
+    S_CPOS_DIE4,601,9779
+    S_CPOS_DIE5,602,9796
+    S_CPOS_DIE6,603,9813
+    S_CPOS_DIE7,604,9830
+    S_CPOS_XDIE1,605,9847
+    S_CPOS_XDIE2,606,9865
+    S_CPOS_XDIE3,607,9883
+    S_CPOS_XDIE4,608,9901
+    S_CPOS_XDIE5,609,9919
+    S_CPOS_XDIE6,610,9937
+    S_CPOS_RAISE1,611,9955
+    S_CPOS_RAISE2,612,9974
+    S_CPOS_RAISE3,613,9993
+    S_CPOS_RAISE4,614,10012
+    S_CPOS_RAISE5,615,10031
+    S_CPOS_RAISE6,616,10050
+    S_CPOS_RAISE7,617,10069
+    S_TROO_STND,618,10088
+    S_TROO_STND2,619,10105
+    S_TROO_RUN1,620,10123
+    S_TROO_RUN2,621,10140
+    S_TROO_RUN3,622,10157
+    S_TROO_RUN4,623,10174
+    S_TROO_RUN5,624,10191
+    S_TROO_RUN6,625,10208
+    S_TROO_RUN7,626,10225
+    S_TROO_RUN8,627,10242
+    S_TROO_ATK1,628,10259
+    S_TROO_ATK2,629,10276
+    S_TROO_ATK3,630,10293
+    S_TROO_PAIN,631,10310
+    S_TROO_PAIN2,632,10327
+    S_TROO_DIE1,633,10345
+    S_TROO_DIE2,634,10362
+    S_TROO_DIE3,635,10379
+    S_TROO_DIE4,636,10396
+    S_TROO_DIE5,637,10413
+    S_TROO_XDIE1,638,10430
+    S_TROO_XDIE2,639,10448
+    S_TROO_XDIE3,640,10466
+    S_TROO_XDIE4,641,10484
+    S_TROO_XDIE5,642,10502
+    S_TROO_XDIE6,643,10520
+    S_TROO_XDIE7,644,10538
+    S_TROO_XDIE8,645,10556
+    S_TROO_RAISE1,646,10574
+    S_TROO_RAISE2,647,10593
+    S_TROO_RAISE3,648,10612
+    S_TROO_RAISE4,649,10631
+    S_TROO_RAISE5,650,10650
+    S_SARG_STND,651,10669
+    S_SARG_STND2,652,10686
+    S_SARG_RUN1,653,10704
+    S_SARG_RUN2,654,10721
+    S_SARG_RUN3,655,10738
+    S_SARG_RUN4,656,10755
+    S_SARG_RUN5,657,10772
+    S_SARG_RUN6,658,10789
+    S_SARG_RUN7,659,10806
+    S_SARG_RUN8,660,10823
+    S_SARG_ATK1,661,10840
+    S_SARG_ATK2,662,10857
+    S_SARG_ATK3,663,10874
+    S_SARG_PAIN,664,10891
+    S_SARG_PAIN2,665,10908
+    S_SARG_DIE1,666,10926
+    S_SARG_DIE2,667,10943
+    S_SARG_DIE3,668,10960
+    S_SARG_DIE4,669,10977
+    S_SARG_DIE5,670,10994
+    S_SARG_DIE6,671,11011
+    S_SARG_RAISE1,672,11028
+    S_SARG_RAISE2,673,11047
+    S_SARG_RAISE3,674,11066
+    S_SARG_RAISE4,675,11085
+    S_SARG_RAISE5,676,11104
+    S_SARG_RAISE6,677,11123
+    S_HEAD_STND,678,11142
+    S_HEAD_RUN1,679,11159
+    S_HEAD_ATK1,680,11176
+    S_HEAD_ATK2,681,11193
+    S_HEAD_ATK3,682,11210
+    S_HEAD_PAIN,683,11227
+    S_HEAD_PAIN2,684,11244
+    S_HEAD_PAIN3,685,11262
+    S_HEAD_DIE1,686,11280
+    S_HEAD_DIE2,687,11297
+    S_HEAD_DIE3,688,11314
+    S_HEAD_DIE4,689,11331
+    S_HEAD_DIE5,690,11348
+    S_HEAD_DIE6,691,11365
+    S_HEAD_RAISE1,692,11382
+    S_HEAD_RAISE2,693,11401
+    S_HEAD_RAISE3,694,11420
+    S_HEAD_RAISE4,695,11439
+    S_HEAD_RAISE5,696,11458
+    S_HEAD_RAISE6,697,11477
+    S_BRBALL1,698,11496
+    S_BRBALL2,699,11511
+    S_BRBALLX1,700,11526
+    S_BRBALLX2,701,11542
+    S_BRBALLX3,702,11558
+    S_BOSS_STND,703,11574
+    S_BOSS_STND2,704,11591
+    S_BOSS_RUN1,705,11609
+    S_BOSS_RUN2,706,11626
+    S_BOSS_RUN3,707,11643
+    S_BOSS_RUN4,708,11660
+    S_BOSS_RUN5,709,11677
+    S_BOSS_RUN6,710,11694
+    S_BOSS_RUN7,711,11711
+    S_BOSS_RUN8,712,11728
+    S_BOSS_ATK1,713,11745
+    S_BOSS_ATK2,714,11762
+    S_BOSS_ATK3,715,11779
+    S_BOSS_PAIN,716,11796
+    S_BOSS_PAIN2,717,11813
+    S_BOSS_DIE1,718,11831
+    S_BOSS_DIE2,719,11848
+    S_BOSS_DIE3,720,11865
+    S_BOSS_DIE4,721,11882
+    S_BOSS_DIE5,722,11899
+    S_BOSS_DIE6,723,11916
+    S_BOSS_DIE7,724,11933
+    S_BOSS_RAISE1,725,11950
+    S_BOSS_RAISE2,726,11969
+    S_BOSS_RAISE3,727,11988
+    S_BOSS_RAISE4,728,12007
+    S_BOSS_RAISE5,729,12026
+    S_BOSS_RAISE6,730,12045
+    S_BOSS_RAISE7,731,12064
+    S_BOS2_STND,732,12083
+    S_BOS2_STND2,733,12100
+    S_BOS2_RUN1,734,12118
+    S_BOS2_RUN2,735,12135
+    S_BOS2_RUN3,736,12152
+    S_BOS2_RUN4,737,12169
+    S_BOS2_RUN5,738,12186
+    S_BOS2_RUN6,739,12203
+    S_BOS2_RUN7,740,12220
+    S_BOS2_RUN8,741,12237
+    S_BOS2_ATK1,742,12254
+    S_BOS2_ATK2,743,12271
+    S_BOS2_ATK3,744,12288
+    S_BOS2_PAIN,745,12305
+    S_BOS2_PAIN2,746,12322
+    S_BOS2_DIE1,747,12340
+    S_BOS2_DIE2,748,12357
+    S_BOS2_DIE3,749,12374
+    S_BOS2_DIE4,750,12391
+    S_BOS2_DIE5,751,12408
+    S_BOS2_DIE6,752,12425
+    S_BOS2_DIE7,753,12442
+    S_BOS2_RAISE1,754,12459
+    S_BOS2_RAISE2,755,12478
+    S_BOS2_RAISE3,756,12497
+    S_BOS2_RAISE4,757,12516
+    S_BOS2_RAISE5,758,12535
+    S_BOS2_RAISE6,759,12554
+    S_BOS2_RAISE7,760,12573
+    S_SKULL_STND,761,12592
+    S_SKULL_STND2,762,12610
+    S_SKULL_RUN1,763,12629
+    S_SKULL_RUN2,764,12647
+    S_SKULL_ATK1,765,12665
+    S_SKULL_ATK2,766,12683
+    S_SKULL_ATK3,767,12701
+    S_SKULL_ATK4,768,12719
+    S_SKULL_PAIN,769,12737
+    S_SKULL_PAIN2,770,12755
+    S_SKULL_DIE1,771,12774
+    S_SKULL_DIE2,772,12792
+    S_SKULL_DIE3,773,12810
+    S_SKULL_DIE4,774,12828
+    S_SKULL_DIE5,775,12846
+    S_SKULL_DIE6,776,12864
+    S_SPID_STND,777,12882
+    S_SPID_STND2,778,12899
+    S_SPID_RUN1,779,12917
+    S_SPID_RUN2,780,12934
+    S_SPID_RUN3,781,12951
+    S_SPID_RUN4,782,12968
+    S_SPID_RUN5,783,12985
+    S_SPID_RUN6,784,13002
+    S_SPID_RUN7,785,13019
+    S_SPID_RUN8,786,13036
+    S_SPID_RUN9,787,13053
+    S_SPID_RUN10,788,13070
+    S_SPID_RUN11,789,13088
+    S_SPID_RUN12,790,13106
+    S_SPID_ATK1,791,13124
+    S_SPID_ATK2,792,13141
+    S_SPID_ATK3,793,13158
+    S_SPID_ATK4,794,13175
+    S_SPID_PAIN,795,13192
+    S_SPID_PAIN2,796,13209
+    S_SPID_DIE1,797,13227
+    S_SPID_DIE2,798,13244
+    S_SPID_DIE3,799,13261
+    S_SPID_DIE4,800,13278
+    S_SPID_DIE5,801,13295
+    S_SPID_DIE6,802,13312
+    S_SPID_DIE7,803,13329
+    S_SPID_DIE8,804,13346
+    S_SPID_DIE9,805,13363
+    S_SPID_DIE10,806,13380
+    S_SPID_DIE11,807,13398
+    S_BSPI_STND,808,13416
+    S_BSPI_STND2,809,13433
+    S_BSPI_SIGHT,810,13451
+    S_BSPI_RUN1,811,13469
+    S_BSPI_RUN2,812,13486
+    S_BSPI_RUN3,813,13503
+    S_BSPI_RUN4,814,13520
+    S_BSPI_RUN5,815,13537
+    S_BSPI_RUN6,816,13554
+    S_BSPI_RUN7,817,13571
+    S_BSPI_RUN8,818,13588
+    S_BSPI_RUN9,819,13605
+    S_BSPI_RUN10,820,13622
+    S_BSPI_RUN11,821,13640
+    S_BSPI_RUN12,822,13658
+    S_BSPI_ATK1,823,13676
+    S_BSPI_ATK2,824,13693
+    S_BSPI_ATK3,825,13710
+    S_BSPI_ATK4,826,13727
+    S_BSPI_PAIN,827,13744
+    S_BSPI_PAIN2,828,13761
+    S_BSPI_DIE1,829,13779
+    S_BSPI_DIE2,830,13796
+    S_BSPI_DIE3,831,13813
+    S_BSPI_DIE4,832,13830
+    S_BSPI_DIE5,833,13847
+    S_BSPI_DIE6,834,13864
+    S_BSPI_DIE7,835,13881
+    S_BSPI_RAISE1,836,13898
+    S_BSPI_RAISE2,837,13917
+    S_BSPI_RAISE3,838,13936
+    S_BSPI_RAISE4,839,13955
+    S_BSPI_RAISE5,840,13974
+    S_BSPI_RAISE6,841,13993
+    S_BSPI_RAISE7,842,14012
+    S_ARACH_PLAZ,843,14031
+    S_ARACH_PLAZ2,844,14049
+    S_ARACH_PLEX,845,14068
+    S_ARACH_PLEX2,846,14086
+    S_ARACH_PLEX3,847,14105
+    S_ARACH_PLEX4,848,14124
+    S_ARACH_PLEX5,849,14143
+    S_CYBER_STND,850,14162
+    S_CYBER_STND2,851,14180
+    S_CYBER_RUN1,852,14199
+    S_CYBER_RUN2,853,14217
+    S_CYBER_RUN3,854,14235
+    S_CYBER_RUN4,855,14253
+    S_CYBER_RUN5,856,14271
+    S_CYBER_RUN6,857,14289
+    S_CYBER_RUN7,858,14307
+    S_CYBER_RUN8,859,14325
+    S_CYBER_ATK1,860,14343
+    S_CYBER_ATK2,861,14361
+    S_CYBER_ATK3,862,14379
+    S_CYBER_ATK4,863,14397
+    S_CYBER_ATK5,864,14415
+    S_CYBER_ATK6,865,14433
+    S_CYBER_PAIN,866,14451
+    S_CYBER_DIE1,867,14469
+    S_CYBER_DIE2,868,14487
+    S_CYBER_DIE3,869,14505
+    S_CYBER_DIE4,870,14523
+    S_CYBER_DIE5,871,14541
+    S_CYBER_DIE6,872,14559
+    S_CYBER_DIE7,873,14577
+    S_CYBER_DIE8,874,14595
+    S_CYBER_DIE9,875,14613
+    S_CYBER_DIE10,876,14631
+    S_PAIN_STND,877,14650
+    S_PAIN_RUN1,878,14667
+    S_PAIN_RUN2,879,14684
+    S_PAIN_RUN3,880,14701
+    S_PAIN_RUN4,881,14718
+    S_PAIN_RUN5,882,14735
+    S_PAIN_RUN6,883,14752
+    S_PAIN_ATK1,884,14769
+    S_PAIN_ATK2,885,14786
+    S_PAIN_ATK3,886,14803
+    S_PAIN_ATK4,887,14820
+    S_PAIN_PAIN,888,14837
+    S_PAIN_PAIN2,889,14854
+    S_PAIN_DIE1,890,14872
+    S_PAIN_DIE2,891,14889
+    S_PAIN_DIE3,892,14906
+    S_PAIN_DIE4,893,14923
+    S_PAIN_DIE5,894,14940
+    S_PAIN_DIE6,895,14957
+    S_PAIN_RAISE1,896,14974
+    S_PAIN_RAISE2,897,14993
+    S_PAIN_RAISE3,898,15012
+    S_PAIN_RAISE4,899,15031
+    S_PAIN_RAISE5,900,15050
+    S_PAIN_RAISE6,901,15069
+    S_SSWV_STND,902,15088
+    S_SSWV_STND2,903,15105
+    S_SSWV_RUN1,904,15123
+    S_SSWV_RUN2,905,15140
+    S_SSWV_RUN3,906,15157
+    S_SSWV_RUN4,907,15174
+    S_SSWV_RUN5,908,15191
+    S_SSWV_RUN6,909,15208
+    S_SSWV_RUN7,910,15225
+    S_SSWV_RUN8,911,15242
+    S_SSWV_ATK1,912,15259
+    S_SSWV_ATK2,913,15276
+    S_SSWV_ATK3,914,15293
+    S_SSWV_ATK4,915,15310
+    S_SSWV_ATK5,916,15327
+    S_SSWV_ATK6,917,15344
+    S_SSWV_PAIN,918,15361
+    S_SSWV_PAIN2,919,15378
+    S_SSWV_DIE1,920,15396
+    S_SSWV_DIE2,921,15413
+    S_SSWV_DIE3,922,15430
+    S_SSWV_DIE4,923,15447
+    S_SSWV_DIE5,924,15464
+    S_SSWV_XDIE1,925,15481
+    S_SSWV_XDIE2,926,15499
+    S_SSWV_XDIE3,927,15517
+    S_SSWV_XDIE4,928,15535
+    S_SSWV_XDIE5,929,15553
+    S_SSWV_XDIE6,930,15571
+    S_SSWV_XDIE7,931,15589
+    S_SSWV_XDIE8,932,15607
+    S_SSWV_XDIE9,933,15625
+    S_SSWV_RAISE1,934,15643
+    S_SSWV_RAISE2,935,15662
+    S_SSWV_RAISE3,936,15681
+    S_SSWV_RAISE4,937,15700
+    S_SSWV_RAISE5,938,15719
+    S_KEENSTND,939,15738
+    S_COMMKEEN,940,15754
+    S_COMMKEEN2,941,15770
+    S_COMMKEEN3,942,15787
+    S_COMMKEEN4,943,15804
+    S_COMMKEEN5,944,15821
+    S_COMMKEEN6,945,15838
+    S_COMMKEEN7,946,15855
+    S_COMMKEEN8,947,15872
+    S_COMMKEEN9,948,15889
+    S_COMMKEEN10,949,15906
+    S_COMMKEEN11,950,15924
+    S_COMMKEEN12,951,15942
+    S_KEENPAIN,952,15960
+    S_KEENPAIN2,953,15976
+    S_BRAIN,954,15993
+    S_BRAIN_PAIN,955,16006
+    S_BRAIN_DIE1,956,16024
+    S_BRAIN_DIE2,957,16042
+    S_BRAIN_DIE3,958,16060
+    S_BRAIN_DIE4,959,16078
+    S_BRAINEYE,960,16096
+    S_BRAINEYESEE,961,16112
+    S_BRAINEYE1,962,16131
+    S_SPAWN1,963,16148
+    S_SPAWN2,964,16162
+    S_SPAWN3,965,16176
+    S_SPAWN4,966,16190
+    S_SPAWNFIRE1,967,16204
+    S_SPAWNFIRE2,968,16222
+    S_SPAWNFIRE3,969,16240
+    S_SPAWNFIRE4,970,16258
+    S_SPAWNFIRE5,971,16276
+    S_SPAWNFIRE6,972,16294
+    S_SPAWNFIRE7,973,16312
+    S_SPAWNFIRE8,974,16330
+    S_BRAINEXPLODE1,975,16348
+    S_BRAINEXPLODE2,976,16369
+    S_BRAINEXPLODE3,977,16390
+    S_ARM1,978,16411
+    S_ARM1A,979,16423
+    S_ARM2,980,16436
+    S_ARM2A,981,16448
+    S_BAR1,982,16461
+    S_BAR2,983,16473
+    S_BEXP,984,16485
+    S_BEXP2,985,16497
+    S_BEXP3,986,16510
+    S_BEXP4,987,16523
+    S_BEXP5,988,16536
+    S_BBAR1,989,16549
+    S_BBAR2,990,16562
+    S_BBAR3,991,16575
+    S_BON1,992,16588
+    S_BON1A,993,16600
+    S_BON1B,994,16613
+    S_BON1C,995,16626
+    S_BON1D,996,16639
+    S_BON1E,997,16652
+    S_BON2,998,16665
+    S_BON2A,999,16677
+    S_BON2B,1000,16690
+    S_BON2C,1001,16703
+    S_BON2D,1002,16716
+    S_BON2E,1003,16729
+    S_BKEY,1004,16742
+    S_BKEY2,1005,16754
+    S_RKEY,1006,16767
+    S_RKEY2,1007,16779
+    S_YKEY,1008,16792
+    S_YKEY2,1009,16804
+    S_BSKULL,1010,16817
+    S_BSKULL2,1011,16831
+    S_RSKULL,1012,16846
+    S_RSKULL2,1013,16860
+    S_YSKULL,1014,16875
+    S_YSKULL2,1015,16889
+    S_STIM,1016,16904
+    S_MEDI,1017,16916
+    S_SOUL,1018,16928
+    S_SOUL2,1019,16940
+    S_SOUL3,1020,16953
+    S_SOUL4,1021,16966
+    S_SOUL5,1022,16979
+    S_SOUL6,1023,16992
+    S_PINV,1024,17005
+    S_PINV2,1025,17017
+    S_PINV3,1026,17030
+    S_PINV4,1027,17043
+    S_PSTR,1028,17056
+    S_PINS,1029,17068
+    S_PINS2,1030,17080
+    S_PINS3,1031,17093
+    S_PINS4,1032,17106
+    S_MEGA,1033,17119
+    S_MEGA2,1034,17131
+    S_MEGA3,1035,17144
+    S_MEGA4,1036,17157
+    S_SUIT,1037,17170
+    S_PMAP,1038,17182
+    S_PMAP2,1039,17194
+    S_PMAP3,1040,17207
+    S_PMAP4,1041,17220
+    S_PMAP5,1042,17233
+    S_PMAP6,1043,17246
+    S_PVIS,1044,17259
+    S_PVIS2,1045,17271
+    S_CLIP,1046,17284
+    S_AMMO,1047,17296
+    S_ROCK,1048,17308
+    S_BROK,1049,17320
+    S_CELL,1050,17332
+    S_CELP,1051,17344
+    S_SHEL,1052,17356
+    S_SBOX,1053,17368
+    S_BPAK,1054,17380
+    S_BFUG,1055,17392
+    S_MGUN,1056,17404
+    S_CSAW,1057,17416
+    S_LAUN,1058,17428
+    S_PLAS,1059,17440
+    S_SHOT,1060,17452
+    S_SHOT2,1061,17464
+    S_COLU,1062,17477
+    S_STALAG,1063,17489
+    S_BLOODYTWITCH,1064,17503
+    S_BLOODYTWITCH2,1065,17523
+    S_BLOODYTWITCH3,1066,17544
+    S_BLOODYTWITCH4,1067,17565
+    S_DEADTORSO,1068,17586
+    S_DEADBOTTOM,1069,17603
+    S_HEADSONSTICK,1070,17621
+    S_GIBS,1071,17641
+    S_HEADONASTICK,1072,17653
+    S_HEADCANDLES,1073,17673
+    S_HEADCANDLES2,1074,17692
+    S_DEADSTICK,1075,17712
+    S_LIVESTICK,1076,17729
+    S_LIVESTICK2,1077,17746
+    S_MEAT2,1078,17764
+    S_MEAT3,1079,17777
+    S_MEAT4,1080,17790
+    S_MEAT5,1081,17803
+    S_STALAGTITE,1082,17816
+    S_TALLGRNCOL,1083,17834
+    S_SHRTGRNCOL,1084,17852
+    S_TALLREDCOL,1085,17870
+    S_SHRTREDCOL,1086,17888
+    S_CANDLESTIK,1087,17906
+    S_CANDELABRA,1088,17924
+    S_SKULLCOL,1089,17942
+    S_TORCHTREE,1090,17958
+    S_BIGTREE,1091,17975
+    S_TECHPILLAR,1092,17990
+    S_EVILEYE,1093,18008
+    S_EVILEYE2,1094,18023
+    S_EVILEYE3,1095,18039
+    S_EVILEYE4,1096,18055
+    S_FLOATSKULL,1097,18071
+    S_FLOATSKULL2,1098,18089
+    S_FLOATSKULL3,1099,18108
+    S_HEARTCOL,1100,18127
+    S_HEARTCOL2,1101,18143
+    S_BLUETORCH,1102,18160
+    S_BLUETORCH2,1103,18177
+    S_BLUETORCH3,1104,18195
+    S_BLUETORCH4,1105,18213
+    S_GREENTORCH,1106,18231
+    S_GREENTORCH2,1107,18249
+    S_GREENTORCH3,1108,18268
+    S_GREENTORCH4,1109,18287
+    S_REDTORCH,1110,18306
+    S_REDTORCH2,1111,18322
+    S_REDTORCH3,1112,18339
+    S_REDTORCH4,1113,18356
+    S_BTORCHSHRT,1114,18373
+    S_BTORCHSHRT2,1115,18391
+    S_BTORCHSHRT3,1116,18410
+    S_BTORCHSHRT4,1117,18429
+    S_GTORCHSHRT,1118,18448
+    S_GTORCHSHRT2,1119,18466
+    S_GTORCHSHRT3,1120,18485
+    S_GTORCHSHRT4,1121,18504
+    S_RTORCHSHRT,1122,18523
+    S_RTORCHSHRT2,1123,18541
+    S_RTORCHSHRT3,1124,18560
+    S_RTORCHSHRT4,1125,18579
+    S_HANGNOGUTS,1126,18598
+    S_HANGBNOBRAIN,1127,18616
+    S_HANGTLOOKDN,1128,18636
+    S_HANGTSKULL,1129,18655
+    S_HANGTLOOKUP,1130,18673
+    S_HANGTNOBRAIN,1131,18692
+    S_COLONGIBS,1132,18712
+    S_SMALLPOOL,1133,18729
+    S_BRAINSTEM,1134,18746
+    S_TECHLAMP,1135,18763
+    S_TECHLAMP2,1136,18779
+    S_TECHLAMP3,1137,18796
+    S_TECHLAMP4,1138,18813
+    S_TECH2LAMP,1139,18830
+    S_TECH2LAMP2,1140,18847
+    S_TECH2LAMP3,1141,18865
+    S_TECH2LAMP4,1142,18883
+    NUMSTATES1143,18901
+} statenum_t;1144,18915
+  spritenum_t	sprite;1149,18948
+  long			frame;1150,18970
+  long			tics;1151,18986
+  actionf_t			action;1153,19026
+  statenum_t			nextstate;1154,19048
+  long			misc1,1155,19074
+  long			misc1, misc2;1155,19074
+} state_t;1156,19097
+    MT_PLAYER,1164,19196
+    MT_POSSESSED,1165,19211
+    MT_SHOTGUY,1166,19229
+    MT_VILE,1167,19245
+    MT_FIRE,1168,19258
+    MT_UNDEAD,1169,19271
+    MT_TRACER,1170,19286
+    MT_SMOKE,1171,19301
+    MT_FATSO,1172,19315
+    MT_FATSHOT,1173,19329
+    MT_CHAINGUY,1174,19345
+    MT_TROOP,1175,19362
+    MT_SERGEANT,1176,19376
+    MT_SHADOWS,1177,19393
+    MT_HEAD,1178,19409
+    MT_BRUISER,1179,19422
+    MT_BRUISERSHOT,1180,19438
+    MT_KNIGHT,1181,19458
+    MT_SKULL,1182,19473
+    MT_SPIDER,1183,19487
+    MT_BABY,1184,19502
+    MT_CYBORG,1185,19515
+    MT_PAIN,1186,19530
+    MT_WOLFSS,1187,19543
+    MT_KEEN,1188,19558
+    MT_BOSSBRAIN,1189,19571
+    MT_BOSSSPIT,1190,19589
+    MT_BOSSTARGET,1191,19606
+    MT_SPAWNSHOT,1192,19625
+    MT_SPAWNFIRE,1193,19643
+    MT_BARREL,1194,19661
+    MT_TROOPSHOT,1195,19676
+    MT_HEADSHOT,1196,19694
+    MT_ROCKET,1197,19711
+    MT_PLASMA,1198,19726
+    MT_BFG,1199,19741
+    MT_ARACHPLAZ,1200,19753
+    MT_PUFF,1201,19771
+    MT_BLOOD,1202,19784
+    MT_TFOG,1203,19798
+    MT_IFOG,1204,19811
+    MT_TELEPORTMAN,1205,19824
+    MT_EXTRABFG,1206,19844
+    MT_MISC0,1207,19861
+    MT_MISC1,1208,19875
+    MT_MISC2,1209,19889
+    MT_MISC3,1210,19903
+    MT_MISC4,1211,19917
+    MT_MISC5,1212,19931
+    MT_MISC6,1213,19945
+    MT_MISC7,1214,19959
+    MT_MISC8,1215,19973
+    MT_MISC9,1216,19987
+    MT_MISC10,1217,20001
+    MT_MISC11,1218,20016
+    MT_MISC12,1219,20031
+    MT_INV,1220,20046
+    MT_MISC13,1221,20058
+    MT_INS,1222,20073
+    MT_MISC14,1223,20085
+    MT_MISC15,1224,20100
+    MT_MISC16,1225,20115
+    MT_MEGA,1226,20130
+    MT_CLIP,1227,20143
+    MT_MISC17,1228,20156
+    MT_MISC18,1229,20171
+    MT_MISC19,1230,20186
+    MT_MISC20,1231,20201
+    MT_MISC21,1232,20216
+    MT_MISC22,1233,20231
+    MT_MISC23,1234,20246
+    MT_MISC24,1235,20261
+    MT_MISC25,1236,20276
+    MT_CHAINGUN,1237,20291
+    MT_MISC26,1238,20308
+    MT_MISC27,1239,20323
+    MT_MISC28,1240,20338
+    MT_SHOTGUN,1241,20353
+    MT_SUPERSHOTGUN,1242,20369
+    MT_MISC29,1243,20390
+    MT_MISC30,1244,20405
+    MT_MISC31,1245,20420
+    MT_MISC32,1246,20435
+    MT_MISC33,1247,20450
+    MT_MISC34,1248,20465
+    MT_MISC35,1249,20480
+    MT_MISC36,1250,20495
+    MT_MISC37,1251,20510
+    MT_MISC38,1252,20525
+    MT_MISC39,1253,20540
+    MT_MISC40,1254,20555
+    MT_MISC41,1255,20570
+    MT_MISC42,1256,20585
+    MT_MISC43,1257,20600
+    MT_MISC44,1258,20615
+    MT_MISC45,1259,20630
+    MT_MISC46,1260,20645
+    MT_MISC47,1261,20660
+    MT_MISC48,1262,20675
+    MT_MISC49,1263,20690
+    MT_MISC50,1264,20705
+    MT_MISC51,1265,20720
+    MT_MISC52,1266,20735
+    MT_MISC53,1267,20750
+    MT_MISC54,1268,20765
+    MT_MISC55,1269,20780
+    MT_MISC56,1270,20795
+    MT_MISC57,1271,20810
+    MT_MISC58,1272,20825
+    MT_MISC59,1273,20840
+    MT_MISC60,1274,20855
+    MT_MISC61,1275,20870
+    MT_MISC62,1276,20885
+    MT_MISC63,1277,20900
+    MT_MISC64,1278,20915
+    MT_MISC65,1279,20930
+    MT_MISC66,1280,20945
+    MT_MISC67,1281,20960
+    MT_MISC68,1282,20975
+    MT_MISC69,1283,20990
+    MT_MISC70,1284,21005
+    MT_MISC71,1285,21020
+    MT_MISC72,1286,21035
+    MT_MISC73,1287,21050
+    MT_MISC74,1288,21065
+    MT_MISC75,1289,21080
+    MT_MISC76,1290,21095
+    MT_MISC77,1291,21110
+    MT_MISC78,1292,21125
+    MT_MISC79,1293,21140
+    MT_MISC80,1294,21155
+    MT_MISC81,1295,21170
+    MT_MISC82,1296,21185
+    MT_MISC83,1297,21200
+    MT_MISC84,1298,21215
+    MT_MISC85,1299,21230
+    MT_MISC86,1300,21245
+    NUMMOBJTYPES1301,21260
+} mobjtype_t;1303,21278
+    int	doomednum;1307,21310
+    int	spawnstate;1308,21329
+    int	spawnhealth;1309,21349
+    int	seestate;1310,21370
+    int	seesound;1311,21388
+    int	reactiontime;1312,21406
+    int	attacksound;1313,21428
+    int	painstate;1314,21449
+    int	painchance;1315,21468
+    int	painsound;1316,21488
+    int	meleestate;1317,21507
+    int	missilestate;1318,21527
+    int	deathstate;1319,21549
+    int	xdeathstate;1320,21569
+    int	deathsound;1321,21590
+    int	speed;1322,21610
+    int	radius;1323,21625
+    int	height;1324,21641
+    int	mass;1325,21657
+    int	damage;1326,21671
+    int	activesound;1327,21687
+    int	flags;1328,21708
+    int	raisestate;1329,21723
+} mobjinfo_t;1331,21744
+
+i_sound.h,27
+#define __I_SOUND__24,741
+
+i_system.h,28
+#define __I_SYSTEM__24,748
+
+i_video.h,27
+#define __I_VIDEO__24,747
+
+m_argv.h,26
+#define __M_ARGV__24,723
+
+m_bbox.h,107
+#define __M_BBOX__24,725
+    BOXTOP,34,832
+    BOXBOTTOM,35,844
+    BOXLEFT,36,859
+    BOXRIGHT37,872
+
+m_cheat.h,139
+#define __M_CHEAT__24,735
+#define SCRAMBLE(30,789
+    unsigned char*	sequence;36,947
+    unsigned char*	p;37,976
+} cheatseq_t;39,1003
+
+m_fixed.h,105
+#define __M_FIXED__24,755
+#define FRACBITS	35,858
+#define FRACUNIT	36,879
+typedef int fixed_t;38,912
+
+m_menu.h,26
+#define __M_MENU__24,766
+
+m_misc.h,26
+#define __M_MISC__24,717
+
+m_random.h,28
+#define __M_RANDOM__24,719
+
+m_swap.h,115
+#define __M_SWAP__24,759
+#define SHORT(37,952
+#define LONG(38,1010
+#define SHORT(40,1078
+#define LONG(41,1099
+
+p_inter.h,27
+#define __P_INTER__24,714
+
+p_local.h,1002
+#define __P_LOCAL__24,756
+#define FLOATSPEED	30,826
+#define MAXHEALTH	33,861
+#define VIEWHEIGHT	34,884
+#define MAPBLOCKUNITS	38,987
+#define MAPBLOCKSIZE	39,1013
+#define MAPBLOCKSHIFT	40,1059
+#define MAPBMASK	41,1094
+#define MAPBTOFRAC	42,1129
+#define PLAYERRADIUS	46,1215
+#define MAXRADIUS	51,1381
+#define GRAVITY	53,1413
+#define MAXMOVE	54,1439
+#define USERANGE	56,1471
+#define MELEERANGE	57,1503
+#define MISSILERANGE	58,1537
+#define	BASETHRESHOLD	61,1620
+#define ONFLOORZ	95,2075
+#define ONCEILINGZ	96,2100
+#define ITEMQUESIZE	99,2166
+    fixed_t	x;137,2927
+    fixed_t	y;138,2942
+    fixed_t	dx;139,2957
+    fixed_t	dy;140,2973
+} divline_t;142,2994
+    fixed_t	frac;146,3025
+    boolean	isaline;147,3064
+	mobj_t*	thing;149,3097
+	line_t*	line;150,3113
+    }			d;151,3128
+} intercept_t;152,3139
+#define MAXINTERCEPTS	154,3155
+typedef boolean (*traverser_t)traverser_t159,3262
+#define PT_ADDLINES	178,3942
+#define PT_ADDTHINGS	179,3965
+#define PT_EARLYOUT	180,3988
+
+p_mobj.h,2648
+#define __P_MOBJ__24,757
+    MF_SPECIAL	120,3965
+    MF_SOLID	122,4001
+    MF_SHOOTABLE	124,4039
+    MF_NOSECTOR	126,4122
+    MF_NOBLOCKMAP	128,4200
+    MF_AMBUSH	131,4296
+    MF_JUSTHIT	133,4355
+    MF_JUSTATTACKED	135,4430
+    MF_SPAWNCEILING	138,4555
+    MF_NOGRAVITY	142,4714
+    MF_DROPOFF	146,4805
+    MF_DROPOFF		= 0x400,x400146,4805
+    MF_PICKUP	148,4870
+    MF_PICKUP		= 0x800,x800148,4870
+    MF_NOCLIP	150,4919
+    MF_NOCLIP		= 0x1000,x1000150,4919
+    MF_SLIDE	152,4996
+    MF_SLIDE		= 0x2000,x2000152,4996
+    MF_FLOAT	155,5128
+    MF_FLOAT		= 0x4000,x4000155,5128
+    MF_TELEPORT	158,5222
+    MF_TELEPORT		= 0x8000,x8000158,5222
+    MF_MISSILE	161,5360
+    MF_MISSILE		= 0x10000,x10000161,5360
+    MF_DROPPED	164,5489
+    MF_DROPPED		= 0x20000,x20000164,5489
+    MF_SHADOW	167,5614
+    MF_SHADOW		= 0x40000,x40000167,5614
+    MF_NOBLOOD	170,5744
+    MF_NOBLOOD		= 0x80000,x80000170,5744
+    MF_CORPSE	173,5874
+    MF_CORPSE		= 0x100000,x100000173,5874
+    MF_INFLOAT	176,5990
+    MF_INFLOAT		= 0x200000,x200000176,5990
+    MF_COUNTKILL	181,6124
+    MF_COUNTKILL	= 0x400000,x400000181,6124
+    MF_COUNTITEM	185,6244
+    MF_COUNTITEM	= 0x800000,x800000185,6244
+    MF_SKULLFLY	189,6358
+    MF_SKULLFLY		= 0x1000000,x1000000189,6358
+    MF_NOTDMATCH 193,6466
+    MF_NOTDMATCH    	= 0x2000000,x2000000193,6466
+    MF_TRANSLATION 199,6698
+    MF_TRANSLATION  	= 0xc000000,xc000000199,6698
+    MF_TRANSSHIFT	201,6748
+} mobjflag_t;203,6772
+typedef struct mobj_s207,6814
+    thinker_t		thinker;210,6866
+    fixed_t		x;213,6926
+    fixed_t		y;214,6942
+    fixed_t		z;215,6958
+    struct mobj_s*	snext;218,7021
+    struct mobj_s*	sprev;219,7047
+    angle_t		angle;222,7128
+    spritenum_t		sprite;223,7163
+    int			frame;224,7227
+    struct mobj_s*	bnext;228,7355
+    struct mobj_s*	bprev;229,7381
+    struct subsector_s*	subsector;231,7412
+    fixed_t		floorz;234,7504
+    fixed_t		ceilingz;235,7525
+    fixed_t		radius;238,7579
+    fixed_t		height;239,7600
+    fixed_t		momx;242,7666
+    fixed_t		momy;243,7685
+    fixed_t		momz;244,7704
+    int			validcount;247,7766
+    mobjtype_t		type;249,7789
+    mobjinfo_t*		info;250,7811
+    int			tics;252,7864
+    state_t*		state;253,7901
+    int			flags;254,7922
+    int			health;255,7939
+    int			movedir;258,8020
+    int			movecount;259,8046
+    struct mobj_s*	target;263,8183
+    int			reactiontime;267,8318
+    int			threshold;271,8423
+    struct player_s*	player;275,8539
+    int			lastlook;278,8607
+    mapthing_t		spawnpoint;281,8659
+    struct mobj_s*	tracer;284,8737
+} mobj_t;286,8770
+
+p_pspr.h,296
+#define __P_PSPR__24,732
+#define FF_FULLBRIGHT	50,1235
+#define FF_FRAMEMASK	51,1288
+    ps_weapon,62,1468
+    ps_flash,63,1483
+    NUMPSPRITES64,1497
+} psprnum_t;66,1514
+    state_t*	state;70,1545
+    int		tics;71,1598
+    fixed_t	sx;72,1613
+    fixed_t	sy;73,1629
+} pspdef_t;75,1646
+
+p_saveg.h,27
+#define __P_SAVEG__24,752
+
+p_setup.h,27
+#define __P_SETUP__24,745
+
+p_spec.h,5226
+#define __P_SPEC__27,870
+#define MO_TELEPORTMAN 38,1026
+    thinker_t	thinker;126,2229
+    sector_t*	sector;127,2252
+    int		count;128,2274
+    int		maxlight;129,2290
+    int		minlight;130,2309
+} fireflicker_t;132,2333
+    thinker_t	thinker;138,2370
+    sector_t*	sector;139,2393
+    int		count;140,2415
+    int		maxlight;141,2431
+    int		minlight;142,2450
+    int		maxtime;143,2469
+    int		mintime;144,2487
+} lightflash_t;146,2510
+    thinker_t	thinker;152,2546
+    sector_t*	sector;153,2569
+    int		count;154,2591
+    int		minlight;155,2607
+    int		maxlight;156,2626
+    int		darktime;157,2645
+    int		brighttime;158,2664
+} strobe_t;160,2690
+    thinker_t	thinker;167,2723
+    sector_t*	sector;168,2746
+    int		minlight;169,2768
+    int		maxlight;170,2787
+    int		direction;171,2806
+} glow_t;173,2827
+#define GLOWSPEED	176,2839
+#define STROBEBRIGHT	177,2861
+#define FASTDARK	178,2885
+#define SLOWDARK	179,2907
+    char	name1[name1211,3446
+    char	name2[name2212,3465
+    short	episode;213,3484
+} switchlist_t;215,3508
+    top,220,3541
+    middle,221,3550
+    bottom222,3562
+} bwhere_e;224,3574
+    line_t*	line;229,3605
+    bwhere_e	where;230,3623
+    int		btexture;231,3643
+    int		btimer;232,3662
+    mobj_t*	soundorg;233,3679
+} button_t;235,3702
+#define MAXSWITCHES	241,3756
+#define MAXBUTTONS	244,3825
+#define BUTTONTIME 247,3874
+    up,264,4083
+    down,265,4091
+    waiting,266,4101
+    in_stasis267,4114
+} plat_e;269,4129
+    perpetualRaise,275,4157
+    downWaitUpStay,276,4177
+    raiseAndChange,277,4197
+    raiseToNearestAndChange,278,4217
+    blazeDWUS279,4246
+} plattype_e;281,4261
+    thinker_t	thinker;287,4295
+    sector_t*	sector;288,4318
+    fixed_t	speed;289,4340
+    fixed_t	low;290,4359
+    fixed_t	high;291,4376
+    int		wait;292,4394
+    int		count;293,4409
+    plat_e	status;294,4425
+    plat_e	oldstatus;295,4444
+    boolean	crush;296,4466
+    int		tag;297,4485
+    plattype_e	type;298,4499
+} plat_t;300,4525
+#define PLATWAIT	304,4538
+#define PLATSPEED	305,4558
+#define MAXPLATS	306,4586
+    normal,330,4938
+    close30ThenOpen,331,4950
+    close,332,4971
+    open,333,4982
+    raiseIn5Mins,334,4992
+    blazeRaise,335,5010
+    blazeOpen,336,5026
+    blazeClose337,5041
+} vldoor_e;339,5057
+    thinker_t	thinker;345,5089
+    vldoor_e	type;346,5112
+    sector_t*	sector;347,5131
+    fixed_t	topheight;348,5153
+    fixed_t	speed;349,5176
+    int             direction;352,5241
+    int             topwait;355,5308
+    int             topcountdown;358,5429
+} vldoor_t;360,5468
+#define VDOORSPEED	364,5483
+#define VDOORWAIT	365,5514
+    sd_opening,399,5934
+    sd_waiting,400,5950
+    sd_closing401,5966
+} sd_e;403,5982
+    sdt_openOnly,409,6008
+    sdt_closeOnly,410,6026
+    sdt_openAndClose411,6045
+} sdt_e;413,6067
+    thinker_t	thinker;420,6097
+    sdt_e	type;421,6120
+    line_t*	line;422,6136
+    int		frame;423,6154
+    int		whichDoorIndex;424,6170
+    int		timer;425,6195
+    sector_t*	frontsector;426,6211
+    sector_t*	backsector;427,6238
+    sd_e	 status;428,6264
+} slidedoor_t;430,6283
+    char	frontFrame1[frontFrame1436,6318
+    char	frontFrame2[frontFrame2437,6343
+    char	frontFrame3[frontFrame3438,6368
+    char	frontFrame4[frontFrame4439,6393
+    char	backFrame1[backFrame1440,6418
+    char	backFrame2[backFrame2441,6442
+    char	backFrame3[backFrame3442,6466
+    char	backFrame4[backFrame4443,6490
+} slidename_t;445,6519
+    int             frontFrames[frontFrames451,6554
+    int             backFrames[backFrames452,6590
+} slideframe_t;454,6626
+#define SNUMFRAMES	459,6677
+#define SDOORWAIT	461,6700
+#define SWAITTICS	462,6724
+#define MAXSLIDEDOORS	465,6779
+    lowerToFloor,482,6967
+    raiseToHighest,483,6985
+    lowerAndCrush,484,7005
+    crushAndRaise,485,7024
+    fastCrushAndRaise,486,7043
+    silentCrushAndRaise487,7066
+} ceiling_e;489,7091
+    thinker_t	thinker;495,7124
+    ceiling_e	type;496,7147
+    sector_t*	sector;497,7167
+    fixed_t	bottomheight;498,7189
+    fixed_t	topheight;499,7215
+    fixed_t	speed;500,7238
+    boolean	crush;501,7257
+    int		direction;504,7315
+    int		tag;507,7346
+    int		olddirection;508,7379
+} ceiling_t;510,7407
+#define CEILSPEED	516,7425
+#define CEILWAIT	517,7453
+#define MAXCEILINGS	518,7475
+    lowerFloor,540,7903
+    lowerFloorToLowest,543,7971
+    turboLower,546,8058
+    raiseFloor,549,8128
+    raiseFloorToNearest,552,8202
+    raiseToTexture,555,8284
+    lowerAndChange,559,8384
+    raiseFloor24,561,8407
+    raiseFloor24AndChange,562,8425
+    raiseFloorCrush,563,8452
+    raiseFloorTurbo,566,8523
+    donutRaise,567,8551
+    raiseFloor512568,8567
+} floor_e;570,8590
+    build8,577,8620
+    turbo16	578,8653
+} stair_e;580,8693
+    thinker_t	thinker;586,8724
+    floor_e	type;587,8747
+    boolean	crush;588,8765
+    sector_t*	sector;589,8784
+    int		direction;590,8806
+    int		newspecial;591,8826
+    short	texture;592,8847
+    fixed_t	floordestheight;593,8866
+    fixed_t	speed;594,8895
+} floormove_t;596,8915
+#define FLOORSPEED	600,8933
+    ok,604,8978
+    crushed,605,8986
+    pastdest606,8999
+} result_e;608,9017
+
+p_tick.h,26
+#define __P_TICK__24,715
+
+r_bsp.h,71
+#define __R_BSP__24,756
+typedef void (*drawfunc_t)drawfunc_t56,1323
+
+r_data.h,26
+#define __R_DATA__25,784
+
+r_defs.h,4080
+#define __R_DEFS__24,776
+#define SIL_NONE	50,1196
+#define SIL_BOTTOM	51,1216
+#define SIL_TOP	52,1238
+#define SIL_BOTH	53,1258
+#define MAXDRAWSEGS	55,1279
+    fixed_t	x;73,1519
+    fixed_t	y;74,1534
+} vertex_t;76,1554
+    thinker_t		thinker;90,1854
+    fixed_t		x;91,1903
+    fixed_t		y;92,1919
+    fixed_t		z;93,1935
+} degenmobj_t;95,1952
+    fixed_t	floorheight;103,2050
+    fixed_t	ceilingheight;104,2075
+    short	floorpic;105,2102
+    short	ceilingpic;106,2122
+    short	lightlevel;107,2144
+    short	special;108,2166
+    short	tag;109,2185
+    int		soundtraversed;112,2243
+    mobj_t*	soundtarget;115,2310
+    int		blockbox[blockbox118,2384
+    degenmobj_t	soundorg;121,2457
+    int		validcount;124,2525
+    mobj_t*	thinglist;127,2578
+    void*	specialdata;130,2642
+    int			linecount;132,2666
+    struct line_s**	lines;133,2687
+} sector_t;135,2739
+    fixed_t	textureoffset;147,2844
+    fixed_t	rowoffset;150,2922
+    short	toptexture;154,3009
+    short	bottomtexture;155,3031
+    short	midtexture;156,3056
+    sector_t*	sector;159,3116
+} side_t;161,3143
+    ST_HORIZONTAL,170,3212
+    ST_VERTICAL,171,3231
+    ST_POSITIVE,172,3248
+    ST_NEGATIVE173,3265
+} slopetype_t;175,3282
+typedef struct line_s179,3300
+    vertex_t*	v1;182,3356
+    vertex_t*	v2;183,3374
+    fixed_t	dx;186,3441
+    fixed_t	dy;187,3457
+    short	flags;190,3500
+    short	special;191,3517
+    short	tag;192,3536
+    short	sidenum[sidenum196,3631
+    fixed_t	bbox[bbox200,3731
+    slopetype_t	slopetype;203,3782
+    sector_t*	frontsector;207,3896
+    sector_t*	backsector;208,3923
+    int		validcount;211,3991
+    void*	specialdata;214,4053
+} line_t;215,4078
+typedef struct subsector_s227,4271
+    sector_t*	sector;229,4300
+    short	numlines;230,4322
+    short	firstline;231,4342
+} subsector_t;233,4368
+    vertex_t*	v1;242,4425
+    vertex_t*	v2;243,4443
+    fixed_t	offset;245,4466
+    angle_t	angle;247,4487
+    side_t*	sidedef;249,4507
+    line_t*	linedef;250,4528
+    sector_t*	frontsector;255,4667
+    sector_t*	backsector;256,4694
+} seg_t;258,4725
+    fixed_t	x;268,4796
+    fixed_t	y;269,4811
+    fixed_t	dx;270,4826
+    fixed_t	dy;271,4842
+    fixed_t	bbox[bbox274,4895
+    unsigned short children[children277,4960
+} node_t;279,4997
+    byte		topdelta;287,5074
+    byte		length;288,5129
+} post_t;289,5177
+typedef post_t	column_t;292,5251
+typedef byte	lighttable_t;314,5659
+typedef struct drawseg_s322,5702
+    seg_t*		curline;324,5729
+    int			x1;325,5750
+    int			x2;326,5764
+    fixed_t		scale1;328,5779
+    fixed_t		scale2;329,5800
+    fixed_t		scalestep;330,5821
+    int			silhouette;333,5885
+    fixed_t		bsilheight;336,5946
+    fixed_t		tsilheight;339,6010
+    short*		sprtopclip;343,6137
+    short*		sprbottomclip;344,6163
+    short*		maskedtexturecol;345,6191
+} drawseg_t;347,6226
+    short		width;358,6436
+    short		height;359,6477
+    short		leftoffset;360,6497
+    short		topoffset;361,6553
+    int			columnofs[columnofs362,6603
+} patch_t;364,6685
+typedef struct vissprite_s375,6820
+    struct vissprite_s*	prev;378,6876
+    struct vissprite_s*	next;379,6906
+    int			x1;381,6941
+    int			x2;382,6955
+    fixed_t		gx;385,7003
+    fixed_t		gy;386,7020
+    fixed_t		gz;389,7091
+    fixed_t		gzt;390,7108
+    fixed_t		startfrac;393,7160
+    fixed_t		scale;395,7189
+    fixed_t		xiscale;398,7241
+    fixed_t		texturemid;400,7265
+    int			patch;401,7290
+    lighttable_t*	colormap;405,7387
+    int			mobjflags;407,7419
+} vissprite_t;409,7445
+    boolean	rotate;432,8198
+    short	lump[lump435,8259
+    byte	flip[flip438,8334
+} spriteframe_t;440,8357
+    int			numframes;450,8458
+    spriteframe_t*	spriteframes;451,8479
+} spritedef_t;453,8513
+  fixed_t		height;462,8590
+  int			picnum;463,8609
+  int			lightlevel;464,8625
+  int			minx;465,8645
+  int			maxx;466,8659
+  byte		pad1;470,8717
+  byte		top[top473,8805
+  byte		pad2;474,8831
+  byte		pad3;475,8845
+  byte		bottom[bottom477,8875
+  byte		pad4;478,8904
+} visplane_t;480,8919
+
+r_draw.h,26
+#define __R_DRAW__24,746
+
+r_local.h,27
+#define __R_LOCAL__24,794
+
+r_main.h,236
+#define __R_MAIN__24,746
+#define LIGHTLEVELS	69,1405
+#define LIGHTSEGSHIFT	70,1436
+#define MAXLIGHTSCALE	72,1470
+#define LIGHTSCALESHIFT	73,1496
+#define MAXLIGHTZ	74,1524
+#define LIGHTZSHIFT	75,1553
+#define NUMCOLORMAPS	87,1903
+
+r_plane.h,82
+#define __R_PLANE__24,757
+typedef void (*planefunction_t)planefunction_t38,895
+
+r_segs.h,26
+#define __R_SEGS__24,756
+
+r_sky.h,87
+#define __R_SKY__24,727
+#define			SKYFLATNAME 32,824
+#define ANGLETOSKYSHIFT	35,891
+
+r_state.h,27
+#define __R_STATE__24,764
+
+r_things.h,58
+#define __R_THINGS__24,753
+#define MAXVISSPRITES 31,818
+
+sounds.h,4867
+#define __SOUNDS__24,809
+typedef struct sfxinfo_struct	sfxinfo_t;30,855
+struct sfxinfo_struct32,897
+    char*	name;35,951
+    int		singularity;38,1012
+    int		priority;41,1055
+    sfxinfo_t*	link;44,1109
+    int		pitch;47,1154
+    int		volume;50,1195
+    void*	data;53,1231
+    int		usefulness;58,1405
+    int		lumpnum;61,1453
+    char*	name;73,1554
+    int		lumpnum;76,1599
+    void*	data;79,1640
+    int handle;82,1693
+} musicinfo_t;84,1714
+    mus_None,101,1917
+    mus_e1m1,102,1931
+    mus_e1m2,103,1945
+    mus_e1m3,104,1959
+    mus_e1m4,105,1973
+    mus_e1m5,106,1987
+    mus_e1m6,107,2001
+    mus_e1m7,108,2015
+    mus_e1m8,109,2029
+    mus_e1m9,110,2043
+    mus_e2m1,111,2057
+    mus_e2m2,112,2071
+    mus_e2m3,113,2085
+    mus_e2m4,114,2099
+    mus_e2m5,115,2113
+    mus_e2m6,116,2127
+    mus_e2m7,117,2141
+    mus_e2m8,118,2155
+    mus_e2m9,119,2169
+    mus_e3m1,120,2183
+    mus_e3m2,121,2197
+    mus_e3m3,122,2211
+    mus_e3m4,123,2225
+    mus_e3m5,124,2239
+    mus_e3m6,125,2253
+    mus_e3m7,126,2267
+    mus_e3m8,127,2281
+    mus_e3m9,128,2295
+    mus_inter,129,2309
+    mus_intro,130,2324
+    mus_bunny,131,2339
+    mus_victor,132,2354
+    mus_introa,133,2370
+    mus_runnin,134,2386
+    mus_stalks,135,2402
+    mus_countd,136,2418
+    mus_betwee,137,2434
+    mus_doom,138,2450
+    mus_the_da,139,2464
+    mus_shawn,140,2480
+    mus_ddtblu,141,2495
+    mus_in_cit,142,2511
+    mus_dead,143,2527
+    mus_stlks2,144,2541
+    mus_theda2,145,2557
+    mus_doom2,146,2573
+    mus_ddtbl2,147,2588
+    mus_runni2,148,2604
+    mus_dead2,149,2620
+    mus_stlks3,150,2635
+    mus_romero,151,2651
+    mus_shawn2,152,2667
+    mus_messag,153,2683
+    mus_count2,154,2699
+    mus_ddtbl3,155,2715
+    mus_ampie,156,2731
+    mus_theda3,157,2746
+    mus_adrian,158,2762
+    mus_messg2,159,2778
+    mus_romer2,160,2794
+    mus_tense,161,2810
+    mus_shawn3,162,2825
+    mus_openin,163,2841
+    mus_evil,164,2857
+    mus_ultima,165,2871
+    mus_read_m,166,2887
+    mus_dm2ttl,167,2903
+    mus_dm2int,168,2919
+    NUMMUSIC169,2935
+} musicenum_t;170,2948
+    sfx_None,179,3023
+    sfx_pistol,180,3037
+    sfx_shotgn,181,3053
+    sfx_sgcock,182,3069
+    sfx_dshtgn,183,3085
+    sfx_dbopn,184,3101
+    sfx_dbcls,185,3116
+    sfx_dbload,186,3131
+    sfx_plasma,187,3147
+    sfx_bfg,188,3163
+    sfx_sawup,189,3176
+    sfx_sawidl,190,3191
+    sfx_sawful,191,3207
+    sfx_sawhit,192,3223
+    sfx_rlaunc,193,3239
+    sfx_rxplod,194,3255
+    sfx_firsht,195,3271
+    sfx_firxpl,196,3287
+    sfx_pstart,197,3303
+    sfx_pstop,198,3319
+    sfx_doropn,199,3334
+    sfx_dorcls,200,3350
+    sfx_stnmov,201,3366
+    sfx_swtchn,202,3382
+    sfx_swtchx,203,3398
+    sfx_plpain,204,3414
+    sfx_dmpain,205,3430
+    sfx_popain,206,3446
+    sfx_vipain,207,3462
+    sfx_mnpain,208,3478
+    sfx_pepain,209,3494
+    sfx_slop,210,3510
+    sfx_itemup,211,3524
+    sfx_wpnup,212,3540
+    sfx_oof,213,3555
+    sfx_telept,214,3568
+    sfx_posit1,215,3584
+    sfx_posit2,216,3600
+    sfx_posit3,217,3616
+    sfx_bgsit1,218,3632
+    sfx_bgsit2,219,3648
+    sfx_sgtsit,220,3664
+    sfx_cacsit,221,3680
+    sfx_brssit,222,3696
+    sfx_cybsit,223,3712
+    sfx_spisit,224,3728
+    sfx_bspsit,225,3744
+    sfx_kntsit,226,3760
+    sfx_vilsit,227,3776
+    sfx_mansit,228,3792
+    sfx_pesit,229,3808
+    sfx_sklatk,230,3823
+    sfx_sgtatk,231,3839
+    sfx_skepch,232,3855
+    sfx_vilatk,233,3871
+    sfx_claw,234,3887
+    sfx_skeswg,235,3901
+    sfx_pldeth,236,3917
+    sfx_pdiehi,237,3933
+    sfx_podth1,238,3949
+    sfx_podth2,239,3965
+    sfx_podth3,240,3981
+    sfx_bgdth1,241,3997
+    sfx_bgdth2,242,4013
+    sfx_sgtdth,243,4029
+    sfx_cacdth,244,4045
+    sfx_skldth,245,4061
+    sfx_brsdth,246,4077
+    sfx_cybdth,247,4093
+    sfx_spidth,248,4109
+    sfx_bspdth,249,4125
+    sfx_vildth,250,4141
+    sfx_kntdth,251,4157
+    sfx_pedth,252,4173
+    sfx_skedth,253,4188
+    sfx_posact,254,4204
+    sfx_bgact,255,4220
+    sfx_dmact,256,4235
+    sfx_bspact,257,4250
+    sfx_bspwlk,258,4266
+    sfx_vilact,259,4282
+    sfx_noway,260,4298
+    sfx_barexp,261,4313
+    sfx_punch,262,4329
+    sfx_hoof,263,4344
+    sfx_metal,264,4358
+    sfx_chgun,265,4373
+    sfx_tink,266,4388
+    sfx_bdopn,267,4402
+    sfx_bdcls,268,4417
+    sfx_itmbk,269,4432
+    sfx_flame,270,4447
+    sfx_flamst,271,4462
+    sfx_getpow,272,4478
+    sfx_bospit,273,4494
+    sfx_boscub,274,4510
+    sfx_bossit,275,4526
+    sfx_bospn,276,4542
+    sfx_bosdth,277,4557
+    sfx_manatk,278,4573
+    sfx_mandth,279,4589
+    sfx_sssit,280,4605
+    sfx_ssdth,281,4620
+    sfx_keenpn,282,4635
+    sfx_keendt,283,4651
+    sfx_skeact,284,4667
+    sfx_skesit,285,4683
+    sfx_skeatk,286,4699
+    sfx_radio,287,4715
+    NUMSFX288,4730
+} sfxenum_t;289,4741
+
+s_sound.h,27
+#define __S_SOUND__24,758
+
+st_lib.h,745
+#define __STLIB__23,740
+#define BG 33,864
+#define FG 34,877
+    int		x;48,1029
+    int		y;49,1041
+    int width;52,1087
+    int		oldnum;55,1132
+    int*	num;58,1186
+    boolean*	on;62,1268
+    patch_t**	p;65,1317
+    int data;68,1352
+} st_number_t;70,1371
+    st_number_t		n;79,1528
+    patch_t*		p;82,1577
+} st_percent_t;84,1599
+    int			x;92,1702
+    int			y;93,1715
+    int			oldinum;96,1753
+    int*		inum;99,1804
+    boolean*		on;103,1886
+    patch_t**		p;106,1926
+    int			data;109,1966
+} st_multicon_t;111,1987
+    int			x;121,2089
+    int			y;122,2102
+    int			oldval;125,2139
+    boolean*		val;128,2196
+    boolean*		on;132,2281
+    patch_t*		p;135,2303
+    int			data;136,2328
+} st_binicon_t;138,2364
+
+st_stuff.h,293
+#define __STSTUFF_H__25,848
+#define ST_HEIGHT	32,967
+#define ST_WIDTH	33,999
+#define ST_Y	34,1028
+    AutomapState,61,1460
+    FirstPersonState62,1478
+} st_stateenum_t;64,1504
+    StartChatState,70,1568
+    WaitDestState,71,1588
+    GetChatState72,1607
+} st_chatstateenum_t;74,1629
+
+tables.h,341
+#define __TABLES__37,1154
+#define PI	44,1213
+#define FINEANGLES	50,1271
+#define FINEMASK	51,1296
+#define ANGLETOFINESHIFT	55,1356
+#define ANG45	68,1635
+#define ANG90	69,1662
+#define ANG180	70,1689
+#define ANG270	71,1716
+#define SLOPERANGE	74,1745
+#define SLOPEBITS	75,1770
+#define DBITS	76,1792
+typedef unsigned angle_t;78,1830
+
+v_video.h,51
+#define __V_VIDEO__26,839
+#define CENTERY	39,988
+
+wi_stuff.h,115
+#define __WI_STUFF__23,729
+    NoState 33,844
+    StatCount,34,862
+    ShowNextLoc35,877
+} stateenum_t;37,894
+
+w_wad.h,376
+#define __W_WAD__24,731
+    char		identification[identification38,861
+    int			numlumps;39,892
+    int			infotableofs;40,912
+} wadinfo_t;42,941
+    int			filepos;47,973
+    int			size;48,992
+    char		name[name49,1008
+} filelump_t;51,1032
+    char	name[name58,1100
+    int		handle;59,1118
+    int		position;60,1135
+    int		size;61,1154
+} lumpinfo_t;62,1169
+
+z_zone.h,495
+#define __Z_ZONE__28,879
+#define PU_STATIC	36,1004
+#define PU_SOUND	37,1057
+#define PU_MUSIC	38,1101
+#define PU_DAVE	39,1145
+#define PU_LEVEL	40,1199
+#define PU_LEVSPEC	41,1249
+#define PU_PURGELEVEL	43,1354
+#define PU_CACHE	44,1380
+typedef struct memblock_s58,1727
+    int			size;60,1755
+    void**		user;61,1823
+    int			tag;62,1865
+    int			id;63,1894
+    struct memblock_s*	next;64,1928
+    struct memblock_s*	prev;65,1957
+} memblock_t;66,1986
+#define Z_ChangeTag(72,2114

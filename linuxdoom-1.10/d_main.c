@@ -544,6 +544,7 @@ void D_AddFile (char *file)
 {
     int     numwadfiles;
     char    *newfile;
+	printf("D_AddFile: %s", file);
 	
     for (numwadfiles = 0 ; wadfiles[numwadfiles] ; numwadfiles++)
 	;
@@ -576,6 +577,7 @@ void IdentifyVersion (void)
     char *home;
     char *doomwaddir;
     doomwaddir = getenv("DOOMWADDIR");
+	printf("DOOMWADDIR: %s", doomwaddir);
     if (!doomwaddir)
 	doomwaddir = ".";
 

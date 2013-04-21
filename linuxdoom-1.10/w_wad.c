@@ -140,6 +140,8 @@ char*			reloadname;
 
 void W_AddFile (char *filename)
 {
+	printf ("W_AddFile: %s\n", filename);
+
     wadinfo_t		header;
     lumpinfo_t*		lump_p;
     unsigned		i;
@@ -299,8 +301,10 @@ void W_InitMultipleFiles (char** filenames)
     // will be realloced as lumps are added
     lumpinfo = malloc(1);	
 
-    for ( ; *filenames ; filenames++)
-	W_AddFile (*filenames);
+    for ( ; *filenames ; filenames++) {
+		printf("FILENAME: %s\n", *filenames); 
+		W_AddFile (*filenames);
+	}
 
     if (!numlumps)
 	I_Error ("W_InitFiles: no files found");
