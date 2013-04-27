@@ -688,6 +688,14 @@ void grabsharedmemory(int size)
 	  (int) (image->data));
 }
 
+void p_XVisualInfo(XVisualInfo *info) {
+    printf("screen: %d\n", info->screen);
+    printf("class: %d\n", info->class);
+    printf("depth: %d\n", info->depth);
+    printf("colormap_size: %d\n", info->colormap_size);
+    printf("bits_per_rgb: %d\n", info->bits_per_rgb);
+}
+
 void I_InitGraphics(void)
 {
 
@@ -767,8 +775,16 @@ void I_InitGraphics(void)
 
     // use the default visual 
     X_screen = DefaultScreen(X_display);
-    if (!XMatchVisualInfo(X_display, X_screen, 8, PseudoColor, &X_visualinfo))
+    int items = 0;
+    XVisualInfo *foo = XGetVisualInfo(X_display, VisualNoMask, &X_visualinfo, &items);
+    printf("%d\n", items);
+    int i = 0;
+    for(i = 0; i < items; i++)
+	p_XVisualInfo(foo);
+    exit(1);
+/*    if (!XMatchVisualInfo(X_display, X_screen, 8, PseudoColor, &X_visualinfo))
 	I_Error("xdoom currently only supports 256-color PseudoColor screens");
+*/
     X_visual = X_visualinfo.visual;
 
     // check for the MITSHM extension
